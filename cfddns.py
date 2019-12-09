@@ -9,11 +9,12 @@ from dns import resolver
 sleeptime=600#sleep seconds
 domain=''#your domain
 zones=''#your zone id
-dnsrecords=''#your dns records
+dnsrecords=''#your dns records, see cloudflare's dns api document
+type='A' # A for v4, AAAA for v6 
 
 headers = {
-    'X-Auth-Email': ''#your email
-    'X-Auth-Key': ''#your apikey
+    'X-Auth-Email': '',#your email
+    'X-Auth-Key': '',#your apikey
     'cache-control': 'no-cache'
 }
 
@@ -21,12 +22,17 @@ url = 'https://api.cloudflare.com/client/v4/zones/{0}/dns_records/{1}'.format(zo
 
 checkipweblist4=[
     'http://ipv4.icanhazip.com',
-    'https://v4.ident.me/',
+    'https://v4.ident.me/'
+]
+
+checkipweblist6=[
+    'http://ipv6.icanhazip.com',
+    'https://v6.ident.me'
 ]
 
 def getdomianrecord():
     try:
-        ans = resolver.query(domain,'A')
+        ans = resolver.query(domain,type)
     except:
         return False
     for i in ans.response.answer:
@@ -35,26 +41,38 @@ def getdomianrecord():
 
 def getcurrentip():
     index=0
-    while(index<len(checkipweblist4)):
-        try:
-            currentip=requests.get(checkipweblist[index]).text
-            if(currentip[-1]=='\n'):
-                currentip=currentip[:-1]
-            return currentip
-        except:
-            index+=1
-            continue
+    if(type == 'A'):
+        while(index<len(checkipweblist4)):
+            try:
+                currentip=requests.get(checkipweblist4[index]).text
+                if(currentip[-1]=='\n'):
+                    currentip=currentip[:-1]
+                    return currentip
+            except:
+                index+=1
+                continue
+    elif(type == 'AAAA'):
+        while(index<len(checkipweblist6)):
+            try:
+                currentip=requests.get(checkipweblist6[index]).text
+                if(currentip[-1]=='\n'):
+                    currentip=currentip[:-1]
+                    return currentip
+            except:
+                index+=1
+                continue
     return False
 
 def updatedomain(ip):
-    data = {"type":"A","name":domain,"content":ip,"ttl":120,"proxied":False}
+    data = {"type":type,"name":domain,"content":ip,"ttl":120,"proxied":False}
     response = json.loads(requests.put(url,headers=headers,data=json.dumps(data)).text)
     return response['success']
 
 if __name__ == '__main__':
-    retrytimen=0
-    retrytimeo=0
     while(1):
+        retrytimen=0
+        retrytimeo=0
+
         print('\n[check your domain,system time is: ' + time.strftime("%H:%M:%S") + ']')
 
         domianrecordip=getdomianrecord()
@@ -89,6 +107,4 @@ if __name__ == '__main__':
             print('your domain record is {0}'.format(domianrecordip))
             print('your current ip is {0}'.format(currentip))
             print('ip adress dose not change')
-        retrytimen=0
-        retrytimeo=0
         time.sleep(sleeptime)
