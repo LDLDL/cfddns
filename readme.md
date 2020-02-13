@@ -13,6 +13,7 @@
 ```bash
 pip3 install requests
 pip3 install dnspython
+sudo pip3 install func-timeout
 ```
 ### 3.修改脚本
 修改脚本内的 zoneid apikey email dnsrecords domain

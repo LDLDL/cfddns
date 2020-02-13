@@ -5,6 +5,7 @@ import time
 import requests
 import json
 from dns import resolver
+from func_timeout import func_set_timeout
 
 sleeptime=600#sleep seconds
 domain=''#your domain
@@ -20,91 +21,80 @@ headers = {
 
 url = 'https://api.cloudflare.com/client/v4/zones/{0}/dns_records/{1}'.format(zones,dnsrecords)
 
-checkipweblist4=[
-    'http://ipv4.icanhazip.com',
-    'https://v4.ident.me/'
-]
+look_ip_web = {
+    'A':[
+        'http://ipv4.icanhazip.com',
+        'https://v4.ident.me/'
+    ],
 
-checkipweblist6=[
-    'http://ipv6.icanhazip.com',
-    'https://v6.ident.me'
-]
+    'AAAA':[
+        'http://ipv6.icanhazip.com',
+        'https://v6.ident.me'
+    ]
+}
 
-def getdomianrecord():
-    try:
-        ans = resolver.query(domain,type)
-    except:
-        return False
+@func_set_timeout(30)
+def get_domain_record():
+    ans = resolver.query(domain,type)
     for i in ans.response.answer:
         for j in i.items:
             return j.address
 
-def getcurrentip():
+@func_set_timeout(30)
+def get_current_ip():
     index=0
-    if(type == 'A'):
-        while(index<len(checkipweblist4)):
-            try:
-                currentip=requests.get(checkipweblist4[index]).text
-                if(currentip[-1]=='\n'):
-                    currentip=currentip[:-1]
-                    return currentip
-            except:
-                index+=1
-                continue
-    elif(type == 'AAAA'):
-        while(index<len(checkipweblist6)):
-            try:
-                currentip=requests.get(checkipweblist6[index]).text
-                if(currentip[-1]=='\n'):
-                    currentip=currentip[:-1]
-                    return currentip
-            except:
-                index+=1
-                continue
+    while index < len(look_ip_web[type]) :
+        try:
+            current_ip = requests.get(look_ip_web[type][index]).text
+            if(current_ip[-1] == '\n'):
+                current_ip = current_ip[:-1]
+                return current_ip
+        except:
+            index+=1
     return False
 
-def updatedomain(ip):
+@func_set_timeout(30)
+def update_domain(ip):
     data = {"type":type,"name":domain,"content":ip,"ttl":120,"proxied":False}
     response = json.loads(requests.put(url,headers=headers,data=json.dumps(data)).text)
     return response['success']
 
+def try_func(times,func,*args):
+    result = False
+    while (result == False) and (times > 0):
+        try:
+            result = func(*args)
+        except:
+            result = False
+        times-=1
+    return result
+
+
 if __name__ == '__main__':
-    while(1):
-        retrytimen=0
-        retrytimeo=0
+    while True:
+        print('\n[check your domain, system time is: ' + time.strftime("%H:%M:%S") + ']')
 
-        print('\n[check your domain,system time is: ' + time.strftime("%H:%M:%S") + ']')
-
-        domianrecordip=getdomianrecord()
-        while(domianrecordip==False and retrytimeo<5):
-            print('fail to resolve your domain, retry times:{0}...'.format(retrytimeo+1))
-            retrytimeo+=1
-            domianrecordip=getdomianrecord()
-        if(domianrecordip==False):
+        domain_record_ip = try_func(5,get_domain_record) 
+        if(domain_record_ip == False):
             print('fail to resolve your domain, retry next time')
             time.sleep(sleeptime)
             continue
 
-        currentip=getcurrentip()
-        while (currentip==False and retrytimen<5):
-            print('fail to get your current ip address, retry times:{0}...'.format(retrytimen+1))
-            retrytimen+=1
-            currentip=getcurrentip()
-        if(currentip==False):
+        current_ip = try_func(5,get_current_ip)
+        if(current_ip == False):
             print('fail to get your current ip address, retry next time')
             time.sleep(sleeptime)
             continue
 
-        if(currentip != domianrecordip):
-            print('your domain record is {0}'.format(domianrecordip))
-            print('your current ip is {0}'.format(currentip))
+        print('your domain record is {0}'.format(domain_record_ip))
+        print('your current ip is {0}'.format(current_ip))
+
+        if(current_ip != domain_record_ip):
             print('ip address changed')
-            if(updatedomain(currentip)):
+            if(try_func(5,update_domain,current_ip)):
                 print('domain updated')
             else:
-                print('update domain fail, retury next time')
+                print('update domain fail, retry next time')
         else:
-            print('your domain record is {0}'.format(domianrecordip))
-            print('your current ip is {0}'.format(currentip))
-            print('ip adress dose not change')
+            print('ip address dose not change')
         time.sleep(sleeptime)
