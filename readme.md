@@ -15,22 +15,17 @@ pip3 install requests
 pip3 install dnspython
 sudo pip3 install func-timeout
 ```
-### 3.修改脚本
-修改脚本内的 zoneid apikey email dnsrecords domain
+### 3.运行init.py并输入相关信息
+```bash
+python3 ./init.py
+```
 ### 4.运行脚本
+```bash
+python3 ./cfddns.py
+```
 
 ## 使用服务
-### 1.修改cfddns.serivce
-修改以下语句中的~/cfddns.py为存放cfddns.py的路径
-```
-ExecStart=python ~/cfddns.py
-```
-### 2.将cfddns.service移动到/usr/lib/systemd/system
-
-### 3.启动服务并开机运行
-
+### 以root用户运行install_as_service.sh
 ```bash
-systemctl daemon-reload
-systemctl start cfddns
-systemctl enable cfddns
+sudo bash install_as_service.sh
 ```

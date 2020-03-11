@@ -9,17 +9,15 @@ import json
 from dns import resolver
 from func_timeout import func_set_timeout
 
-sleeptime=600#sleep seconds
-domain=''#your domain
-zones=''#your zone id
-dnsrecords=''#your dns records, see cloudflare's dns api document
-type='A' # A for v4, AAAA for v6 
+import config
 
-headers = {
-    'X-Auth-Email': '',#your email
-    'X-Auth-Key': '',#your apikey
-    'cache-control': 'no-cache'
-}
+sleeptime=600#sleep seconds
+domain=config.domain
+zones=config.zones
+dnsrecords=config.dnsrecords
+type=config.type
+
+headers = config.headers
 
 url = 'https://api.cloudflare.com/client/v4/zones/{0}/dns_records/{1}'.format(zones,dnsrecords)
 
@@ -39,7 +37,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 #log_path = os.getcwd() + '/cfddns.log'
-log_path = '~/cfddns.log'
+log_path = './cfddns.log'
 log_file = logging.FileHandler(log_path, mode='w')
 log_file.setLevel(logging.INFO)
 log_file.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s"))
