@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=root
-ExecStart=python ~/cfddns.py
+ExecStart=python /etc/cfddns/cfddns.py
 Restart=always
 
 [Install]
