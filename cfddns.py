@@ -37,7 +37,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 #log_path = os.getcwd() + '/cfddns.log'
-log_path = './cfddns.log'
+log_path = '/etc/cfddns.log'
 log_file = logging.FileHandler(log_path, mode='w')
 log_file.setLevel(logging.INFO)
 log_file.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s"))
