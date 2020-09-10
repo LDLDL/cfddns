@@ -26,7 +26,7 @@ python3 ./init.py
 python3 ./cfddns.py
 ```
 
-## 使用服务
+## 使用服务(仅适用RH系系统)
 ### 以root用户运行install_as_service.sh
 ```bash
 sudo bash install_as_service.sh
