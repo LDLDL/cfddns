@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=root
+WorkingDirectory=/etc/cfddns
 ExecStart=python3 /etc/cfddns/cfddns.py
 Restart=always
 
