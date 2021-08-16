@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=/etc/cfddns
-ExecStart=python3 /etc/cfddns/cfddns.py
+ExecStart=/usr/bin/python3 /etc/cfddns/cfddns.py
 Restart=always
 
 [Install]
