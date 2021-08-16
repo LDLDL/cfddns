@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/etc/cfddns
-ExecStart=/usr/bin/python3 /etc/cfddns/cfddns.py
+WorkingDirectory=/srv/cfddns
+ExecStart=/usr/bin/python3 /srv/cfddns/cfddns.py
 Restart=always
 
 [Install]
