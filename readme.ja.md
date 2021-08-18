@@ -50,15 +50,15 @@ domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコ�
 
 もしすでに配置しましたスクリプトに新しいドメイン名を追加したい場合は、下記の通りに従います。
 
-1.cfddnsサービスを停止する。systemctl cfddns stop
+1.cfddnsサービスを停止する。`systemctl cfddns stop`
 2.このプロジェクトのフォルダに入る。例えばcfddns
-3.python3 ./init.pyを実行
+3.`python3 ./init.py`を実行
 4.3を押して、最初と同じドメイン名を追加する。
-5.cat conf.json > /srv/cfddns/conf.jsonを実行
-6.サービスを起動する。systemctl cfddns start
+5.`cat conf.json > /srv/cfddns/conf.json`を実行
+6.サービスを起動する。`systemctl cfddns start`
 
 ## エラーに対して問題
 
 install_as_service.shを実行する際にインストできない場合は、ご使用中のシステムのsystemdフォルダを探して、それからcfddns.serviceをそれに入っておきます。
 
-もしエラーがpython3が見つかりません。その場合はcfddns.serviceでpython3の絶対パスに書き換えます。
+もしエラーがpython3が見つかりませんったら、その場合はcfddns.serviceでpython3の絶対パスに書き換えます。
