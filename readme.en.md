@@ -48,12 +48,12 @@ If error messages shows up, that means somethings wrong in configure, please rec
 
 If you want to add more domain, Just follow this guide:
 
-1. Stop the service. systemctl cfddns stop
+1. Stop the service.`systemctl cfddns stop`
 2. Enter this project's folder. For example cd cfddns
-3. Run python3 ./init.py
+3. Run `python3 ./init.py`
 4. Press 3, Just add the domain likes new install.
-5. Input cat conf.json > /srv/cfddns/conf.json
-6. Start the service. systemctl cfddns start
+5. Input `cat conf.json > /srv/cfddns/conf.json`
+6. Start the service. `systemctl cfddns start`
 
 ## Possibly issues
 
