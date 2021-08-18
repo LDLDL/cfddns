@@ -1,6 +1,6 @@
 # CloudFlare DDNS脚本
 
-[English](#English)|[日本語説明](#日本語説明)
+[English](readme.en.md)|[日本語説明](readme.ja.md)
 
 一个使用python3实现的CloudFlare DDNS脚本
 
@@ -48,96 +48,19 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 
 结束后如果报错，说明有配置问题，如果没有任何提示，说明成功配置完成了。
 
-# English
+## 增加域名
 
-CloudFlare DDNS Python3 Script.
+如果已经配置完成的脚本，需要增加其他域名，可按以下步骤操作。
 
-## System Requirement
+1. 停止服务，输入systemctl cfddns stop
+2. 进入本项目文件夹，例如cfddns
+3. 执行python3 ./init.py
+4. 按3，像第一次安装一样增加域名。
+5. 输入cat conf.json > /srv/cfddns/conf.json
+6. 启动服务，输入systemctl cfddns start
 
-python >=3.6
+## 可能的问题
 
-## How to run
+若install_as_service.sh出现无法安装到系统服务时，请搜索正在使用中系统的systemd文件存放位置，并将cfddns.service复制进对应的文件夹。
 
-### 1.Install python3.6 or newer version.
-
-### 2.Install required package and fetch the code.
-
-```bash
-pip3 install requests dnspython func-timeout
-git clone https://github.com/LDLDL/cfddns.git
-```
-### 3.run the install_as_service.sh and configure the script.
-
-`bash install_as_service.sh`
-
-## Configure
-
-Before the configure, You need add records which you want to configure.
-
-For example, Add the ddns.example.com and set A Record and AAAA Record. The record can't be your current IP address.
-
-Then run the install_as_service.sh, it will enter the configure menu.
-
-![g00](https://user-images.githubusercontent.com/81149482/129917531-d499ae47-79ab-44b0-910b-e1f2a98fc68c.png)
-
-Email: CloudFlare's login email.
-
-Zones: on the domain page, click the Overview button, copy the Zone ID
-
-API Key: Click [Here](https://dash.cloudflare.com/profile/api-tokens)and view the Global API Key
-
-When you finished, Input 3 and add domain.
-
-Domain: your domain, For example ddns.example.com
-
-domain record type(A for v4, AAAA for v6)：Input type, A for A record, AAAA for AAAA record.
-
-If error messages shows up, that means somethings wrong in configure, please reconfigure it and run again.
-
-# 日本語説明
-
-Python3で開発したCloudFlare DDNSスクリプト。
-
-## 要件
-
-python >=3.6
-
-## 使用方法
-
-### 1.python3.6以降のバージョンをインスト
-
-略
-
-### 2.下記の通りに実行
-
-```bash
-pip3 install requests dnspython func-timeout
-git clone https://github.com/LDLDL/cfddns.git
-```
-### 3.install_as_service.shを実行してから配置します
-
-`bash install_as_service.sh`
-
-## 配置
-
-配置に先立って、配置したいドメイン名を配置しております。
-
-例えばddns.example.comは配置したい場合は、まずAレコードまた和AAAAレコードに追加。そのIPアドレスは自分が使っているIPと同じではいけない。
-
-install_as_service.shを実行すると、配置メニューに入ります。
-
-![g00](https://user-images.githubusercontent.com/81149482/129917531-d499ae47-79ab-44b0-910b-e1f2a98fc68c.png)
-
-Email: CloudFlareで登録したメールアドレスです。
-
-Zones: 対応のドメイン名のOverviewページで、右下にあったZone ID
-
-API Key: [ここ](https://dash.cloudflare.com/profile/api-tokens)をクリック、Global API Keyの右にviewをクリックすると、表示された英数字がAPI Keyです。
-
-配置が完成してから3を入力してドメイン名を追加する。
-
-Domain: 配置したいドメイン名。例えばddns.example.com
-
-domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコード、AAAAはAAAAレコードです。
-
-全部が完了した後で、もしエラー情報が返したら、もう一度API Tokenなど配置したものをしっかり確認するのが必要だと思います。
+若提示python3不存在，可尝试修改cfddns.service内的python3绝对路径
