@@ -52,12 +52,12 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 
 如果已经配置完成的脚本，需要增加其他域名，可按以下步骤操作。
 
-1. 停止服务，输入systemctl cfddns stop
+1. 停止服务，输入`systemctl cfddns stop`
 2. 进入本项目文件夹，例如cfddns
-3. 执行python3 ./init.py
+3. 执行`python3 ./init.py`
 4. 按3，像第一次安装一样增加域名。
-5. 输入cat conf.json > /srv/cfddns/conf.json
-6. 启动服务，输入systemctl cfddns start
+5. 输入`cat conf.json > /srv/cfddns/conf.json`
+6. 启动服务，输入`systemctl cfddns start`
 
 ## 可能的问题
 
