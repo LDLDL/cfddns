@@ -22,7 +22,7 @@ git clone https://github.com/LDLDL/cfddns.git
 ```
 ### 3.运行install_as_service.sh并输入相关信息
 
-`bash install_as_service.sh`
+`sudo bash install_as_service.sh`
 
 ## 配置
 
@@ -36,7 +36,7 @@ git clone https://github.com/LDLDL/cfddns.git
 
 Email: 输入CloudFlare的登录邮箱即可。
 
-Zones: 对应域名的Overview界面，右下角的Zone ID，点击复制
+Zones: 对应域名的Overview界面，右下角的 区域ID，点击复制
 
 API Key: 在[这里](https://dash.cloudflare.com/profile/api-tokens)的Global API Key，点击view，输入密码查看
 
@@ -46,18 +46,16 @@ Domain: 要配置的域名，比如ddns.example.com
 
 domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是AAAA记录。
 
-结束后如果报错，说明有配置问题，如果没有任何提示，说明成功配置完成了。
+结束后如果报错，说明有配置问题，如果提示成功，说明成功配置完成了。
 
 ## 增加域名
 
 如果已经配置完成的脚本，需要增加其他域名，可按以下步骤操作。
 
-1. 停止服务，输入`systemctl cfddns stop`
-2. 进入本项目文件夹，例如cfddns
-3. 执行`python3 ./init.py`
-4. 按3，像第一次安装一样增加域名。
-5. 输入`cat conf.json > /srv/cfddns/conf.json`
-6. 启动服务，输入`systemctl cfddns start`
+1. 进入本项目文件夹，例如cfddns
+2. 执行`sudo python3 ./config.py`
+3. 按3，像第一次安装一样增加域名。
+4. 重新启动服务，输入`systemctl cfddns restart`
 
 ## 可能的问题
 

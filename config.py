@@ -19,27 +19,45 @@ def get_domain_id(domain, zones, email, apikey, type):
     return None
 
 def set_api(conf):
+    print()
     email = input("Email:")
     zones = input("Zones:")
-    apikey = input("API key:")
-    conf['zones'] = zones
-    conf['email'] = email
-    conf['apikey'] = apikey
+    apikey = input("Global API key:")
+
+    url = f'https://api.cloudflare.com/client/v4/zones/{zones}'
+    headers = {
+        'X-Auth-Email': email,
+        'X-Auth-Key': apikey,
+        'cache-control': 'no-cache'
+    }
+    response = json.loads(requests.get(url, headers=headers).text)
+    if response.get('success'):
+        conf['zones'] = zones
+        conf['email'] = email
+        conf['apikey'] = apikey
+        print('\nSuccess.')
+    else:
+        print('\nGlobal API key or Email or Zone not valid.')
+    print()
+    input()
 
 def show_api(conf):
-    print()
-    print(f"Zone: {conf.get('zones')}")
+    print(f"\nZone: {conf.get('zones')}")
     print(f"Email: {conf.get('email')}")
-    print(f"API key: {conf.get('apikey')}")
+    print(f"Global API key: {conf.get('apikey')}")
+    input()
 
 def add_domian(conf):
+    print()
     if not (conf.get('zones') or conf.get('email') or conf.get('apikey')):
-        print('Please setup api key first.')
+        print('Please setup Global API key first.\n')
+        input()
         return
-    domain = input("domain:")
-    type = input("domain record type(A for v4, AAAA for v6):")
+    domain = input("Domain:")
+    type = input("Domain record type(A for v4, AAAA for v6):")
     if type != "A" and type != "AAAA":
-        print("Type must be A or AAAA")
+        print("\nType must be A or AAAA\n")
+        input()
         return
     domain_id = get_domain_id(domain, conf.get('zones'), conf.get('email'), conf.get('apikey'), type)
     if domain_id:
@@ -47,24 +65,32 @@ def add_domian(conf):
             "name": domain,
             "dns_record": domain_id,
         })
+        print('\nSuccess\n')
     else:
-        print('No such domain name, please add it first.')
+        print('\nNo such domain name, please set it first, then re-add it.\n')
+    input()
 
 def list_domains(conf):
+    print()
+    if not (conf.get('A') or conf.get('AAAA')):
+        print('Empty.\n')
+        return
     i = 1
     for domain in conf.get('A'):
         print(f'{i}. Name: {domain.get("name")}, Type: A')
-        print()
         i += 1
     for domain in conf.get('AAAA'):
         print(f'{i}. Name: {domain.get("name")}, Type: AAAA')
-        print()
         i += 1
 
 def del_domain(conf):
+    if not (conf.get('A') or conf.get('AAAA')):
+        print('\nEmpty.\n')
+        input()
+        return
     list_domains(conf)
     fn = input("Input delete index, input 0 to cancel:")
-    if fn == '0':
+    if fn == '0' or fn == '':
         return
     try:
         index = int(fn) - 1
@@ -72,8 +98,10 @@ def del_domain(conf):
             conf.get('AAAA').pop(index - len(conf.get('A')))
         else:
             conf.get('A').pop(index)
+        print('\nSuccess\n')
     except:
-        print('Index not valid.')
+        print('\nIndex not valid.\n')
+    input()
 
 if __name__ == "__main__":
     conf = {
@@ -84,11 +112,10 @@ if __name__ == "__main__":
         "A": [],
         "AAAA": []
     }
-    if os.path.exists('conf.json'):
-        with open('conf.json', 'r', encoding='utf-8') as fp:
+    if os.path.exists('/srv/cfddns/conf.json'):
+        with open('/srv/cfddns/conf.json', 'r', encoding='utf-8') as fp:
             conf = json.load(fp)
     while True:
-        print()
         print("0 Set API key")
         print("1 Show API key")
         print("2 List domains")
@@ -102,14 +129,17 @@ if __name__ == "__main__":
             show_api(conf)
         elif fn == '2':
             list_domains(conf)
+            input()
         elif fn == '3':
             add_domian(conf)
         elif fn == '4':
             del_domain(conf)
         elif fn == 'q':
-            if os.path.exists('conf.json'):
-                os.remove('conf.json')
-            with open('conf.json', 'w', encoding='utf-8') as fp:
+            if os.path.exists('/srv/cfddns/conf.json'):
+                os.remove('/srv/cfddns/conf.json')
+            if not os.path.exists('/srv/cfddns'):
+                os.mkdir('/srv/cfddns')
+            with open('/srv/cfddns/conf.json', 'w', encoding='utf-8') as fp:
                 json.dump(conf, fp)
             exit(0)
         else:

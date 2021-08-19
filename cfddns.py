@@ -22,6 +22,10 @@ zones = conf.get('zones')
 email = conf.get('email')
 apikey = conf.get('apikey')
 
+if not(zones or email or apikey or conf.get('A') or conf.get('AAAA')):
+    print('Incorrect config file, exiting.')
+    exit(1)
+
 headers = {
     'X-Auth-Email': email,
     'X-Auth-Key': apikey,

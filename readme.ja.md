@@ -20,7 +20,7 @@ git clone https://github.com/LDLDL/cfddns.git
 ```
 ### 3.install_as_service.shを実行してから配置します
 
-`bash install_as_service.sh`
+`sudo bash install_as_service.sh`
 
 ## 配置
 
@@ -50,12 +50,10 @@ domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコ�
 
 もしすでに配置しましたスクリプトに新しいドメイン名を追加したい場合は、下記の通りに従います。
 
-1.cfddnsサービスを停止する。`systemctl cfddns stop`
-2.このプロジェクトのフォルダに入る。例えばcfddns
-3.`python3 ./init.py`を実行
-4.3を押して、最初と同じドメイン名を追加する。
-5.`cat conf.json > /srv/cfddns/conf.json`を実行
-6.サービスを起動する。`systemctl cfddns start`
+1.このプロジェクトのフォルダに入る。例えばcfddns
+2.`sudo python3 ./config.py`を実行
+3.3を押して、最初と同じドメイン名を追加する。
+4.サービスを起動する。`systemctl cfddns restart`
 
 ## エラーに対して問題
 

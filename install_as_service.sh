@@ -1,8 +1,6 @@
 #! bash
-python3 ./init.py
-mkdir /srv/cfddns
+python3 ./config.py
 cp cfddns.py /srv/cfddns/
-cp conf.json /srv/cfddns/
 cp cfddns.service /etc/systemd/system/
 touch /srv/cfddns/cfddns.log
 systemctl daemon-reload
