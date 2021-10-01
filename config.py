@@ -35,7 +35,7 @@ def set_api(conf):
         conf['zones'] = zones
         conf['email'] = email
         conf['apikey'] = apikey
-        print('\nSuccess.')
+        print('\nSuccess.　Press ENTER to continue.')
     else:
         print('\nGlobal API key or Email or Zone not valid.')
     print()
@@ -47,7 +47,7 @@ def show_api(conf):
     print(f"Global API key: {conf.get('apikey')}")
     input()
 
-def add_domian(conf):
+def add_domain(conf):
     print()
     if not (conf.get('zones') or conf.get('email') or conf.get('apikey')):
         print('Please setup Global API key first.\n')
@@ -65,7 +65,7 @@ def add_domian(conf):
             "name": domain,
             "dns_record": domain_id,
         })
-        print('\nSuccess\n')
+        print('\nSuccess.　Press ENTER to continue.\n')
     else:
         print('\nNo such domain name, please set it first, then re-add it.\n')
     input()
@@ -98,7 +98,7 @@ def del_domain(conf):
             conf.get('AAAA').pop(index - len(conf.get('A')))
         else:
             conf.get('A').pop(index)
-        print('\nSuccess\n')
+        print('\nSuccess.　Press ENTER to continue.\n')
     except:
         print('\nIndex not valid.\n')
     input()
@@ -131,7 +131,7 @@ if __name__ == "__main__":
             list_domains(conf)
             input()
         elif fn == '3':
-            add_domian(conf)
+            add_domain(conf)
         elif fn == '4':
             del_domain(conf)
         elif fn == 'q':
