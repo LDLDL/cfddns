@@ -5,46 +5,53 @@ import requests
 import json
 import os
 
-def get_domain_id(domain, zones, email, apikey, type):
-    url = f'https://api.cloudflare.com/client/v4/zones/{zones}/dns_records?type={type}&domain={domain}'
-    headers = {
-        'X-Auth-Email': email,
-        'X-Auth-Key': apikey,
-        'cache-control': 'no-cache'
-    }
-    response = json.loads(requests.get(url, headers=headers).text)
-    for record in response['result']:
-        if record.get('name') == domain:
-            return record.get('id')
-    return None
+global_timeout = 30
+
+def get_domain_id(domain, zones, email, apikey, record_type):
+    try:
+        url = f'https://api.cloudflare.com/client/v4/zones/{zones}/dns_records?type={record_type}&domain={domain}'
+        headers = {
+            'X-Auth-Email': email,
+            'X-Auth-Key': apikey,
+            'cache-control': 'no-cache'
+        }
+        response = json.loads(requests.get(url, headers=headers, timeout=global_timeout).text)
+        for record in response['result']:
+            if record.get('name') == domain:
+                return record.get('id')
+        return None
+    except Exception as e:
+        print(f'Fail to get domain ID from CloudFlare API with reason:{e}')
+        return None
 
 def set_api(conf):
-    print()
-    email = input("Email:")
-    zones = input("Zones:")
-    apikey = input("Global API key:")
+    try:
+        print()
+        email = input("Email:")
+        zones = input("Zones:")
+        apikey = input("Global API key:")
 
-    url = f'https://api.cloudflare.com/client/v4/zones/{zones}'
-    headers = {
-        'X-Auth-Email': email,
-        'X-Auth-Key': apikey,
-        'cache-control': 'no-cache'
-    }
-    response = json.loads(requests.get(url, headers=headers).text)
-    if response.get('success'):
-        conf['zones'] = zones
-        conf['email'] = email
-        conf['apikey'] = apikey
-        print('\nSuccess.　Press ENTER to continue.')
-    else:
-        print('\nGlobal API key or Email or Zone not valid.')
-    print()
-    input()
+        url = f'https://api.cloudflare.com/client/v4/zones/{zones}'
+        headers = {
+            'X-Auth-Email': email,
+            'X-Auth-Key': apikey,
+            'cache-control': 'no-cache'
+        }
+        response = json.loads(requests.get(url, headers=headers, timeout=global_timeout).text)
+        if response.get('success'):
+            conf['zones'] = zones
+            conf['email'] = email
+            conf['apikey'] = apikey
+            print('\nSuccess.　Press ENTER to continue.')
+        else:
+            print('\nGlobal API key or Email or Zone not valid.')
+        print()
+        input()
+    except Exception as e:
+        print(f'Fail to set API information with reason: {e}')
 
 def show_api(conf):
-    print(f"\nZone: {conf.get('zones')}")
-    print(f"Email: {conf.get('email')}")
-    print(f"Global API key: {conf.get('apikey')}")
+    print(f"\nZone: {conf.get('zones')}\nEmail: {conf.get('email')}\nGlobal API key: {conf.get('apikey')}")
     input()
 
 def add_domain(conf):
@@ -54,14 +61,14 @@ def add_domain(conf):
         input()
         return
     domain = input("Domain:")
-    type = input("Domain record type(A for v4, AAAA for v6):")
-    if type != "A" and type != "AAAA":
-        print("\nType must be A or AAAA\n")
+    record_type = input("Domain record type(A for v4, AAAA for v6):")
+    if record_type != "A" and record_type != "AAAA":
+        print("\nType must be A or AAAA.\n")
         input()
         return
-    domain_id = get_domain_id(domain, conf.get('zones'), conf.get('email'), conf.get('apikey'), type)
+    domain_id = get_domain_id(domain, conf.get('zones'), conf.get('email'), conf.get('apikey'), record_type)
     if domain_id:
-        conf.get(type).append({
+        conf.get(record_type).append({
             "name": domain,
             "dns_record": domain_id,
         })
@@ -89,22 +96,22 @@ def del_domain(conf):
         input()
         return
     list_domains(conf)
-    fn = input("Input delete index, input 0 to cancel:")
-    if fn == '0' or fn == '':
+    user_input = input("Input delete index, input 0 to cancel:")
+    if user_input == '0' or user_input == '':
         return
     try:
-        index = int(fn) - 1
+        index = int(user_input) - 1
         if index >= len(conf.get('A')):
             conf.get('AAAA').pop(index - len(conf.get('A')))
         else:
             conf.get('A').pop(index)
         print('\nSuccess.　Press ENTER to continue.\n')
-    except:
-        print('\nIndex not valid.\n')
+    except Exception as e:
+        print(f'\nIndex not valid.\nAdditional error message: {e}')
     input()
 
 if __name__ == "__main__":
-    conf = {
+    config = {
         "zones": "",
         "email": "",
         "apikey": "",
@@ -114,33 +121,28 @@ if __name__ == "__main__":
     }
     if os.path.exists('/srv/cfddns/conf.json'):
         with open('/srv/cfddns/conf.json', 'r', encoding='utf-8') as fp:
-            conf = json.load(fp)
+            config = json.load(fp)
     while True:
-        print("0 Set API key")
-        print("1 Show API key")
-        print("2 List domains")
-        print("3 Add domain")
-        print("4 Delete domain")
-        print("q Save and quit")
+        print("0 Set API key\n1 Show API key\n2 List domains\n3 Add domain\n4 Delete domain\nq Save and quit\n")
         fn = input("Please Input:")
         if fn == '0':
-            set_api(conf)
+            set_api(config)
         elif fn == '1':
-            show_api(conf)
+            show_api(config)
         elif fn == '2':
-            list_domains(conf)
+            list_domains(config)
             input()
         elif fn == '3':
-            add_domain(conf)
+            add_domain(config)
         elif fn == '4':
-            del_domain(conf)
+            del_domain(config)
         elif fn == 'q':
             if os.path.exists('/srv/cfddns/conf.json'):
                 os.remove('/srv/cfddns/conf.json')
             if not os.path.exists('/srv/cfddns'):
                 os.mkdir('/srv/cfddns')
             with open('/srv/cfddns/conf.json', 'w', encoding='utf-8') as fp:
-                json.dump(conf, fp)
+                json.dump(config, fp)
             exit(0)
         else:
             continue
