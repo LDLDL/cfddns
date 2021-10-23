@@ -4,6 +4,8 @@ Python3で開発したCloudFlare DDNSスクリプト。
 
 ## 要件
 
+Linuxシステム（Windows不可）
+
 python >=3.6
 
 ## 使用方法
@@ -26,7 +28,7 @@ git clone https://github.com/LDLDL/cfddns.git
 
 配置に先立って、配置したいドメイン名を配置しておきます。
 
-例えばddns.example.comは配置したい場合は、まずAレコードまた和AAAAレコードに追加。そのIPアドレスは自分が使っているIPと同じではいけない。
+例えばddns.example.comは配置したい場合は、まずCloudFlareのコントロールパネルでAレコードまたAAAAレコードに追加。そのIPアドレスは自分が使っているIPと同じではいけない。（同じにすればいいですが、すぐに動作するかどうかはわかりにくいですから）
 
 install_as_service.shを実行すると、配置メニューに入ります。
 
@@ -59,4 +61,4 @@ domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコ�
 
 install_as_service.shを実行する際にインストできない場合は、ご使用中のシステムのsystemdフォルダを探して、それからcfddns.serviceをそれに入っておきます。
 
-もしエラーがpython3が見つかりませんったら、その場合はcfddns.serviceでpython3の絶対パスに書き換えます。
+もしエラーがpython3が見つかりませんったら、その場合はcfddns.serviceでpython3の絶対パスに書き換えます。（ここで相対パスに入力すればたまに動作可能ですが、交換性を保つため絶対パスに入力するのがお勧めです。）
