@@ -10,8 +10,9 @@ global_timeout = 30
 
 
 if platform.system().lower() != 'linux':
-    print("Fatal Error! This script can only run in Linux system! I quit!")
-    exit(1)
+    conf_file_path = '/srv/cfddns/conf.json'
+else:
+    conf_file_path = './conf.json'
 
 
 def get_domain_id(domain, zones, email, apikey, record_type):
@@ -126,8 +127,8 @@ if __name__ == "__main__":
         "A": [],
         "AAAA": []
     }
-    if os.path.exists('/srv/cfddns/conf.json'):
-        with open('/srv/cfddns/conf.json', 'r', encoding='utf-8') as fp:
+    if os.path.exists(conf_file_path):
+        with open(conf_file_path, 'r', encoding='utf-8') as fp:
             config = json.load(fp)
     while True:
         print("0 Set API key\n1 Show API key\n2 List domains\n3 Add domain\n4 Delete domain\nq Save and quit\n")
@@ -144,11 +145,9 @@ if __name__ == "__main__":
         elif fn == '4':
             del_domain(config)
         elif fn == 'q':
-            if os.path.exists('/srv/cfddns/conf.json'):
-                os.remove('/srv/cfddns/conf.json')
-            if not os.path.exists('/srv/cfddns'):
-                os.mkdir('/srv/cfddns')
-            with open('/srv/cfddns/conf.json', 'w', encoding='utf-8') as fp:
+            if os.path.exists(conf_file_path):
+                os.remove(conf_file_path)
+            with open(conf_file_path, 'w', encoding='utf-8') as fp:
                 json.dump(config, fp)
             exit(0)
         else:
