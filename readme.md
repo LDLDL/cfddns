@@ -6,8 +6,6 @@
 
 ## 系统要求
 
-Linux系统（Windows环境不可使用）
-
 python >=3.6
 
 ## 如何运行
@@ -22,9 +20,23 @@ python >=3.6
 pip3 install requests dnspython func-timeout
 git clone https://github.com/LDLDL/cfddns.git
 ```
-### 3.运行install_as_service.sh并输入相关信息
+### 3.运行 
+#### Linux 
 
-`sudo bash install_as_service.sh`
+Linux系统用户可以使用一键安装脚本，执行后输入相关信息即可 
+脚本作为systemd服务开机自启动 
+
+`sudo bash install_as_service.sh` 
+
+#### Windows / MacOS 
+
+1.在终端内进入本项目目录，运行config.py输入相关信息 
+Windows下Python命令很可能是python而不是python3 
+`python3 ./config.py` 
+
+2.运行cfddns.py
+Windows和MacOS用户需要每次开机执行脚本
+`python3 ./cfddns.py` 
 
 ## 配置
 
@@ -52,12 +64,18 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 
 ## 增加域名
 
+### Linux
 如果已经配置完成的脚本，需要增加其他域名，可按以下步骤操作。
 
 1. 进入本项目文件夹，例如cfddns
 2. 执行`sudo python3 ./config.py`
 3. 按3，像第一次安装一样增加域名。
 4. 重新启动服务，输入`systemctl cfddns restart`
+
+### Windows / MacOS
+1.结束cfddns.py运行
+2.执行congfig.py
+3.运行cfddns.py
 
 ## 可能的问题
 
