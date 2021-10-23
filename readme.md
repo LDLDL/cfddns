@@ -6,6 +6,8 @@
 
 ## 系统要求
 
+Linux系统（Windows环境不可使用）
+
 python >=3.6
 
 ## 如何运行
@@ -28,7 +30,7 @@ git clone https://github.com/LDLDL/cfddns.git
 
 配置之前需要把想配置的域名都配置好解析记录。
 
-例如想要为ddns.example.com配置A和AAAA记录，需要事先增加一条A记录和AAAA记录，并且IP不能为本机IP。
+例如想要为ddns.example.com配置A和AAAA记录，需要事先在CloudFlare增加一条A记录和AAAA记录，并且IP不能为本机IP。（虽然可以是本机IP，但无法立即验证脚本是否起作用了）
 
 运行install_as_service.sh后，会自动进入配置菜单。
 
@@ -59,6 +61,6 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 
 ## 可能的问题
 
-若install_as_service.sh出现无法安装到系统服务时，请搜索正在使用中系统的systemd文件存放位置，并将cfddns.service复制进对应的文件夹。
+若install_as_service.sh出现无法安装到系统服务时，请搜索正在使用着的系统systemd文件存放位置，并将cfddns.service复制进对应的文件夹。
 
-若提示python3不存在，可尝试修改cfddns.service内的python3绝对路径
+若提示python3不存在，可尝试修改cfddns.service内的python3绝对路径（为确保兼容性，请书写绝对路径，尽管有些系统相对路径依旧可以执行）

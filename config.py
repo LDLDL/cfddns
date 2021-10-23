@@ -4,8 +4,15 @@
 import requests
 import json
 import os
+import platform
 
 global_timeout = 30
+
+
+if platform.system().lower() != 'linux':
+    print("Fatal Error! This script can only run in Linux system! I quit!")
+    exit(1)
+
 
 def get_domain_id(domain, zones, email, apikey, record_type):
     try:

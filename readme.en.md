@@ -4,6 +4,7 @@ CloudFlare DDNS Python3 Script.
 
 ## System Requirement
 
+Linux　System (Not support Windows)
 python >=3.6
 
 ## How to run
@@ -24,7 +25,7 @@ git clone https://github.com/LDLDL/cfddns.git
 
 Before the configure, You need add records which you want to configure.
 
-For example, Add the ddns.example.com and set A Record and AAAA Record. The record can't be your current IP address.
+For example, Add the ddns.example.com and set A Record and AAAA Record in the CloudFlare control panel. The record can't be your current IP address.(If the IP address are set to your current IP address, You can't know does this program works)
 
 Then run the install_as_service.sh, it will enter the configure menu.
 
@@ -57,4 +58,4 @@ If you want to add more domain, Just follow this guide:
 
 If when you run the install_as_service.sh and got some errors, Please search how to install systemd service with your system name. and copy the cfddns.service to your systemd folder.
 
-If it display the python3 is not exist, you can try to modify the python3's path which in cfddns.service
+If it display the python3 is not exist, you can try to modify the python3's path which in cfddns.service. There must be input full path of python3. Some system can run with relative path but to keep it stable, full path is recommend.
