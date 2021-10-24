@@ -73,9 +73,9 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 4. 重新启动服务，输入`systemctl cfddns restart`
 
 ### Windows / MacOS
-1.结束cfddns.py运行
-2.执行congfig.py
-3.运行cfddns.py
+1.结束cfddns.py运行  
+2.执行congfig.py  
+3.运行cfddns.py  
 
 ## 可能的问题
 
