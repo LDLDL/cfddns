@@ -23,19 +23,19 @@ git clone https://github.com/LDLDL/cfddns.git
 ### 3.运行 
 #### Linux 
 
-Linux系统用户可以使用一键安装脚本，执行后输入相关信息即可 
-脚本作为systemd服务开机自启动 
+Linux系统用户可以使用一键安装脚本，执行后输入相关信息即可  
+脚本作为systemd服务开机自启动  
 
 `sudo bash install_as_service.sh` 
 
 #### Windows / MacOS 
 
-1.在终端内进入本项目目录，运行config.py输入相关信息 
+1.在终端内进入本项目目录，运行config.py输入相关信息  
 Windows下Python命令很可能是python而不是python3 
 `python3 ./config.py` 
 
 2.运行cfddns.py
-Windows和MacOS用户需要每次开机执行脚本
+Windows和MacOS用户需要每次开机执行脚本  
 `python3 ./cfddns.py` 
 
 ## 配置
