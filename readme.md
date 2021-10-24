@@ -31,7 +31,7 @@ Linux系统用户可以使用一键安装脚本，执行后输入相关信息即
 #### Windows / MacOS 
 
 1.在终端内进入本项目目录，运行config.py输入相关信息  
-Windows下Python命令很可能是python而不是python3 
+Windows下Python命令很可能是python而不是python3  
 `python3 ./config.py` 
 
 2.运行cfddns.py
