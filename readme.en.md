@@ -75,9 +75,9 @@ If you want to add more domain, Just follow this guide:
 
 ### Windows / MacOS
 
-1.close the cfddns.py 
-2.re run config.py  
-3.start cfddns.py  
+1.close the cfddns.py
+2.re run config.py
+3.start cfddns.py
 
 ## Possibly issues
 

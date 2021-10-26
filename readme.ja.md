@@ -70,17 +70,17 @@ domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコ�
 
 ### Linux
 
-1.このプロジェクトのフォルダに入る。例えばcfddns
+1. このプロジェクトのフォルダに入る。例えばcfddns
 2.`sudo python3 ./config.py`を実行
-3.3を押して、最初と同じドメイン名を追加する。
-4.サービスを起動する。`systemctl cfddns restart`
+3. 3を押して、最初と同じドメイン名を追加する。
+4. サービスを起動する。`systemctl cfddns restart`
+
 
 ### Windows / MacOS
 
-1.cfddns.pyを終止する
-2.config.pyを実行して新しいドメイン情報を入力する
-3.設定ガイドが完了した後でcfddns.pyを実行する
-
+1. cfddns.pyを終止する
+2. config.pyを実行して新しいドメイン情報を入力する
+3. 設定ガイドが完了した後でcfddns.pyを実行する
 
 ## エラーに対して問題
 
