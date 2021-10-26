@@ -17,9 +17,26 @@ python >=3.6
 pip3 install requests dnspython func-timeout
 git clone https://github.com/LDLDL/cfddns.git
 ```
-### 3.run the install_as_service.sh and configure the script.
+### 3.Run the script
+
+#### Linux
+
+You can use command: 
 
 `sudo bash install_as_service.sh`
+
+to install this script and set it as system service.
+
+#### Windows / MacOS 
+
+1.Open terminal (Windows is PowerShell or cmd), open this project's folder and run with `python3 ./config.py`
+
+If Python3 is not found, try change command to python to run it.
+
+2.When you complete the configuration, just run with `python3 ./cfddns.py`.
+
+Do not close the window or it will be closed.
+
 
 ## Configure
 
@@ -49,13 +66,21 @@ If error messages shows up, that means somethings wrong in configure, please rec
 
 If you want to add more domain, Just follow this guide:
 
+### Linux
+
 1. Enter this project's folder. For example cd cfddns
 2. Run `sudo python3 ./config.py`
 3. Press 3, Just add the domain likes new install.
 4. Restart the service. `systemctl cfddns restart`
 
+### Windows / MacOS
+
+1.close the cfddns.py 
+2.re run config.py  
+3.start cfddns.py  
+
 ## Possibly issues
 
 If when you run the install_as_service.sh and got some errors, Please search how to install systemd service with your system name. and copy the cfddns.service to your systemd folder.
 
-If it display the python3 is not exist, you can try to modify the python3's path which in cfddns.service. There must be input full path of python3. Some system can run with relative path but to keep it stable, full path is recommend.
+If it display the python3 is not exist, you can try to modify the python3's path which in cfddns.service.(If you are using Windows, try to change python3 to python.) There must be input full path of python3. Some system can run with relative path but to keep it stable, full path is recommend.
