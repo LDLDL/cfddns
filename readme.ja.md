@@ -4,8 +4,6 @@ Python3で開発したCloudFlare DDNSスクリプト。
 
 ## 要件
 
-Linuxシステム（Windows不可）
-
 python >=3.6
 
 ## 使用方法
