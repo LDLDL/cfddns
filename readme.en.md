@@ -4,7 +4,6 @@ CloudFlare DDNS Python3 Script.
 
 ## System Requirement
 
-Linux　System (Not support Windows)
 python >=3.6
 
 ## How to run
