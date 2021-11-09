@@ -74,7 +74,7 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 
 ### Windows / MacOS
 1.结束cfddns.py运行  
-2.执行congfig.py  
+2.执行config.py  
 3.运行cfddns.py  
 
 ## 可能的问题
