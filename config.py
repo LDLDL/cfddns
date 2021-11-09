@@ -9,7 +9,7 @@ import platform
 global_timeout = 30
 
 
-if platform.system().lower() != 'linux':
+if platform.system().lower() == 'linux':
     conf_file_path = '/srv/cfddns/conf.json'
 else:
     conf_file_path = './conf.json'
