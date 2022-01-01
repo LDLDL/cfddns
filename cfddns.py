@@ -112,7 +112,7 @@ def try_func(times,func,*args):
         try:
             logger.debug(f'Calling function "{func.__name__}".')
             result = func(*args)
-        except Exception as e:
+        except BaseException as e:
             logger.warning(f'Calling function "{func.__name__}" timeout or receive a exception: "{e}", kill it.')
             result = False
         times-=1
