@@ -119,40 +119,44 @@ def try_func(times,func,*args):
     return result
 
 def check_domain():
-    logger.info('Checking your domains.')
+    try:
+        logger.info('Checking your domains.')
 
-    if len(conf.get('A')):
-        current_ipv4 = try_func(5, get_current_ip, 'A')
-        if not current_ipv4:
-            logger.info('sleep 10 minutes')
-            return
+        if len(conf.get('A')):
+            current_ipv4 = try_func(5, get_current_ip, 'A')
+            if not current_ipv4:
+                logger.info('sleep 10 minutes')
+                return
+            
+            for domain in conf.get('A'):
+                domain_record_ipv4 = try_func(5, get_domain_record, domain, 'A')
+                if not domain_record_ipv4:
+                    logger.warning(f'Ignore domain {domain.get("name")}, type: A')
+                    continue
+                if current_ipv4 != domain_record_ipv4:
+                    logger.info('IPv4 address changed.')
+                    try_func(5, update_domain, domain, 'A', current_ipv4)
         
-        for domain in conf.get('A'):
-            domain_record_ipv4 = try_func(5, get_domain_record, domain, 'A')
-            if not domain_record_ipv4:
-                logger.warning(f'Ignore domain {domain.get("name")}, type: A')
-                continue
-            if current_ipv4 != domain_record_ipv4:
-                logger.info('IPv4 address changed.')
-                try_func(5, update_domain, domain, 'A', current_ipv4)
-    
-    if len(conf.get('AAAA')):
-        current_ipv6 = try_func(5, get_current_ip, 'AAAA')
-        if not current_ipv6:
-            logger.info('sleep 10 minutes')
-            return
+        if len(conf.get('AAAA')):
+            current_ipv6 = try_func(5, get_current_ip, 'AAAA')
+            if not current_ipv6:
+                logger.info('sleep 10 minutes')
+                return
+            
+            for domain in conf.get('AAAA'):
+                domain_record_ipv6 = try_func(5, get_domain_record, domain, 'AAAA')
+                if not domain_record_ipv6:
+                    logger.warning(f'Ignore domain {domain.get("name")}, type: AAAA')
+                    continue
+                if current_ipv6 != domain_record_ipv6:
+                    logger.info('IPv6 address changed.')
+                    try_func(5, update_domain, domain, 'AAAA', current_ipv6)
         
-        for domain in conf.get('AAAA'):
-            domain_record_ipv6 = try_func(5, get_domain_record, domain, 'AAAA')
-            if not domain_record_ipv6:
-                logger.warning(f'Ignore domain {domain.get("name")}, type: AAAA')
-                continue
-            if current_ipv6 != domain_record_ipv6:
-                logger.info('IPv6 address changed.')
-                try_func(5, update_domain, domain, 'AAAA', current_ipv6)
-    
-    logger.info('sleep 10 minutes')
-
+        logger.info('sleep 10 minutes')
+    except Exception as e:
+        logger.info(e)
+        check_domain()
+        
 if __name__ == "__main__":
     while True:
         check_domain()
