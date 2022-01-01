@@ -70,12 +70,12 @@ def get_domain_record(domain: dict, type: str):
             return j.address
     logger.error(f'Failed to resolve domain: {domain.get("name")}, type: {type}.')
 
-@func_set_timeout(30)
+@func_set_timeout(60)
 def get_current_ip(type: str):
     index=0
     while index < len(look_ip_web[type]) :
         try:
-            current_ip = requests.get(look_ip_web[type][index]).text
+            current_ip = requests.get(look_ip_web[type][index], timeout=15).text
             if current_ip[-1] == '\n':
                 current_ip = current_ip[:-1]
             if type == 'A':
