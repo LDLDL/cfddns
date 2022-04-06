@@ -40,7 +40,6 @@ look_ip_web = {
     ],
 
     'AAAA':[
-        'https://api64.ipify.org/',
         'https://api-ipv6.ip.sb/ip',
         'https://v6.ident.me/'
     ]
