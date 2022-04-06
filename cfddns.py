@@ -35,12 +35,10 @@ headers = {
 look_ip_web = {
     'A':[
         'https://api.ipify.org/',
-        'https://api-ipv4.ip.sb/ip',
         'https://v4.ident.me/'
     ],
 
     'AAAA':[
-        'https://api-ipv6.ip.sb/ip',
         'https://v6.ident.me/'
     ]
 }
