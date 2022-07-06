@@ -55,7 +55,7 @@ ip_sources = {
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-log_path = './cfddns.log'
+log_path = '/tmp/cfddns.log'
 log_file = logging.FileHandler(log_path, mode='a')
 log_file.setLevel(logging.INFO)
 log_file.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s"))
@@ -70,7 +70,7 @@ logger.addHandler(log_console)
 
 @func_set_timeout(30)
 def get_domain_record(domain: dict, typ: str):
-    ans = resolver.query(domain.get("name"), typ)
+    ans = resolver.resolve(domain.get("name"), typ, search=True)
     for i in ans.response.answer:
         for j in i.items:
             logger.info(f'Domain: {domain.get("name")}, typ: {typ} record ip is {j.address}.')
