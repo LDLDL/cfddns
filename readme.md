@@ -14,11 +14,12 @@ python >=3.6
 
 略
 
-### 2.安装以下包并下载本仓库
+### 2.下载本仓库并安装需要的库
 
 ```bash
-pip3 install requests dnspython func-timeout
 git clone https://github.com/LDLDL/cfddns.git
+cd cfddns
+pip3 install -r requirements.txt
 ```
 ### 3.运行 
 #### Linux 
