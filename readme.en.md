@@ -10,11 +10,12 @@ python >=3.6
 
 ### 1.Install python3.6 or newer version.
 
-### 2.Install required package and fetch the code.
+### 2.Fetch the repo and install required packages.
 
 ```bash
-pip3 install requests dnspython func-timeout
 git clone https://github.com/LDLDL/cfddns.git
+cd cfddns
+pip3 install -r requirements.txt
 ```
 ### 3.Run the script
 
