@@ -15,8 +15,9 @@ python >=3.6
 ### 2.下記の通りに実行
 
 ```bash
-pip3 install requests dnspython func-timeout
 git clone https://github.com/LDLDL/cfddns.git
+cd cfddns
+pip3 install -r requirements.txt
 ```
 ### 3.実行
 
