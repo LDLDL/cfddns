@@ -1,4 +1,4 @@
-#！/usr/bin/env python3
+# ！/usr/bin/env python3
 # -*- coding: utf8 -*-
 
 import requests
@@ -7,7 +7,6 @@ import os
 import platform
 
 global_timeout = 30
-
 
 if platform.system().lower() == 'linux':
     conf_file_path = '/srv/cfddns/conf.json'
@@ -31,6 +30,7 @@ def get_domain_id(domain, zones, email, apikey, record_type):
     except Exception as e:
         print(f'Fail to get domain ID from CloudFlare API with reason:{e}')
         return None
+
 
 def set_api(conf):
     try:
@@ -58,9 +58,11 @@ def set_api(conf):
     except Exception as e:
         print(f'Fail to set API information with reason: {e}')
 
+
 def show_api(conf):
     print(f"\nZone: {conf.get('zones')}\nEmail: {conf.get('email')}\nGlobal API key: {conf.get('apikey')}")
     input()
+
 
 def add_domain(conf):
     print()
@@ -85,6 +87,7 @@ def add_domain(conf):
         print('\nNo such domain name, please set it first, then re-add it.\n')
     input()
 
+
 def list_domains(conf):
     print()
     if not (conf.get('A') or conf.get('AAAA')):
@@ -97,6 +100,7 @@ def list_domains(conf):
     for domain in conf.get('AAAA'):
         print(f'{i}. Name: {domain.get("name")}, Type: AAAA')
         i += 1
+
 
 def del_domain(conf):
     if not (conf.get('A') or conf.get('AAAA')):
@@ -117,6 +121,7 @@ def del_domain(conf):
     except Exception as e:
         print(f'\nIndex not valid.\nAdditional error message: {e}')
     input()
+
 
 if __name__ == "__main__":
     config = {
@@ -152,4 +157,3 @@ if __name__ == "__main__":
             exit(0)
         else:
             continue
-            

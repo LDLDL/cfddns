@@ -9,20 +9,20 @@ import json
 from dns import resolver
 from func_timeout import func_set_timeout
 
-sleeptime = 600 #sleep seconds
+sleeptime = 600  # sleep seconds
 conf = dict()
 
 if not os.path.exists("conf.json"):
-        print("Config file not exists, exiting.")
-        exit(1)
+    print("Config file not exists, exiting.")
+    exit(1)
 with open("conf.json", "r", encoding="utf-8") as fp:
     conf = json.load(fp)
-    
+
 zones = conf.get('zones')
 email = conf.get('email')
 apikey = conf.get('apikey')
 
-if not(zones or email or apikey or conf.get('A') or conf.get('AAAA')):
+if not (zones or email or apikey or conf.get('A') or conf.get('AAAA')):
     print('Incorrect config file, exiting.')
     exit(1)
 
@@ -33,12 +33,12 @@ headers = {
 }
 
 look_ip_web = {
-    'A':[
+    'A': [
         'https://api.ipify.org/',
         'https://v4.ident.me/'
     ],
 
-    'AAAA':[
+    'AAAA': [
         'https://v6.ident.me/'
     ]
 }
@@ -58,38 +58,41 @@ log_console.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line:%(li
 logger.addHandler(log_file)
 logger.addHandler(log_console)
 
+
 @func_set_timeout(30)
-def get_domain_record(domain: dict, type: str):
-    ans = resolver.query(domain.get("name"), type)
+def get_domain_record(domain: dict, typ: str):
+    ans = resolver.query(domain.get("name"), typ)
     for i in ans.response.answer:
         for j in i.items:
-            logger.info(f'Domain: {domain.get("name")}, type: {type} record ip is {j.address}.')
+            logger.info(f'Domain: {domain.get("name")}, typ: {typ} record ip is {j.address}.')
             return j.address
-    logger.error(f'Failed to resolve domain: {domain.get("name")}, type: {type}.')
+    logger.error(f'Failed to resolve domain: {domain.get("name")}, typ: {typ}.')
+
 
 @func_set_timeout(60)
-def get_current_ip(type: str):
-    index=0
-    while index < len(look_ip_web[type]) :
+def get_current_ip(typ: str):
+    index = 0
+    while index < len(look_ip_web[typ]):
         try:
-            current_ip = requests.get(look_ip_web[type][index], timeout=15).text
+            current_ip = requests.get(look_ip_web[typ][index], timeout=15).text
             if current_ip[-1] == '\n':
                 current_ip = current_ip[:-1]
-            if type == 'A':
+            if typ == 'A':
                 logger.info(f'Current ipv4 address is {current_ip}.')
-            elif type == 'AAAA':
+            elif typ == 'AAAA':
                 logger.info(f'Current ipv6 address is {current_ip}.')
             return current_ip
         except Exception as err:
-            logger.warning(f'Failed to get ip by using {look_ip_web[type][index]}, err: "{err}"')
-            index+=1
+            logger.warning(f'Failed to get ip by using {look_ip_web[typ][index]}, err: "{err}"')
+            index += 1
     logger.error('Failed to get ip after using all web.')
     return False
 
+
 @func_set_timeout(30)
-def update_domain(domain: dict, type: str, ip: str):
+def update_domain(domain: dict, typ: str, ip: str):
     data = {
-        "type": type,
+        "type": typ,
         "name": domain.get('name'),
         "content": ip,
         "ttl": 120,
@@ -98,12 +101,13 @@ def update_domain(domain: dict, type: str, ip: str):
     url = f"https://api.cloudflare.com/client/v4/zones/{zones}/dns_records/{domain.get('dns_record')}"
     response = json.loads(requests.put(url, headers=headers, data=json.dumps(data)).text)
     if response.get('success'):
-        logger.info(f'Updated domain record of {domain.get("name")}, type: {type} success')
+        logger.info(f'Updated domain record of {domain.get("name")}, typ: {typ} success')
     else:
-        logger.error(f'Failed to update domain record of {domain.get("name")}, type: {type}')
+        logger.error(f'Failed to update domain record of {domain.get("name")}, typ: {typ}')
     return response.get('success')
 
-def try_func(times,func,*args):
+
+def try_func(times, func, *args):
     result = False
     while (result == False) and (times > 0):
         try:
@@ -112,8 +116,9 @@ def try_func(times,func,*args):
         except BaseException as e:
             logger.warning(f'Calling function "{func.__name__}" timeout or receive a exception: "{e}", kill it.')
             result = False
-        times-=1
+        times -= 1
     return result
+
 
 def check_domain():
     logger.info('Checking your domains.')
@@ -123,32 +128,33 @@ def check_domain():
         if not current_ipv4:
             logger.info('sleep 10 minutes')
             return
-        
+
         for domain in conf.get('A'):
             domain_record_ipv4 = try_func(5, get_domain_record, domain, 'A')
             if not domain_record_ipv4:
-                logger.warning(f'Ignore domain {domain.get("name")}, type: A')
+                logger.warning(f'Ignore domain {domain.get("name")}, typ: A')
                 continue
             if current_ipv4 != domain_record_ipv4:
                 logger.info('IPv4 address changed.')
                 try_func(5, update_domain, domain, 'A', current_ipv4)
-    
+
     if len(conf.get('AAAA')):
         current_ipv6 = try_func(5, get_current_ip, 'AAAA')
         if not current_ipv6:
             logger.info('sleep 10 minutes')
             return
-        
+
         for domain in conf.get('AAAA'):
             domain_record_ipv6 = try_func(5, get_domain_record, domain, 'AAAA')
             if not domain_record_ipv6:
-                logger.warning(f'Ignore domain {domain.get("name")}, type: AAAA')
+                logger.warning(f'Ignore domain {domain.get("name")}, typ: AAAA')
                 continue
             if current_ipv6 != domain_record_ipv6:
                 logger.info('IPv6 address changed.')
                 try_func(5, update_domain, domain, 'AAAA', current_ipv6)
-    
+
     logger.info('sleep 10 minutes')
+
 
 if __name__ == "__main__":
     while True:
