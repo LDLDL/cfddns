@@ -7,7 +7,6 @@ import time
 import requests
 import json
 import sources
-from dns import resolver
 from func_timeout import func_set_timeout
 
 sleeptime = 600  # sleep seconds
@@ -70,11 +69,14 @@ logger.addHandler(log_console)
 
 @func_set_timeout(30)
 def get_domain_record(domain: dict, typ: str):
-    ans = resolver.resolve(domain.get("name"), typ, search=True)
-    for i in ans.response.answer:
-        for j in i.items:
-            logger.info(f'Domain: {domain.get("name")}, typ: {typ} record ip is {j.address}.')
-            return j.address
+    url = f"https://api.cloudflare.com/client/v4/zones/{zones}/dns_records"
+    response = json.loads(requests.get(url, {
+        "type": typ,
+        "name": domain.get("name"),
+    }, headers=headers).content)
+    for i in response["result"]:
+        logger.info(f'Domain: {domain.get("name")}, typ: {typ} record ip is {i["content"]}.')
+        return i["content"]
     logger.error(f'Failed to resolve domain: {domain.get("name")}, typ: {typ}.')
 
 
@@ -100,7 +102,7 @@ def update_domain(domain: dict, typ: str, ip: str):
         "type": typ,
         "name": domain.get('name'),
         "content": ip,
-        "ttl": 120,
+        "ttl": 60,
         "proxied": False
     }
     url = f"https://api.cloudflare.com/client/v4/zones/{zones}/dns_records/{domain.get('dns_record')}"
