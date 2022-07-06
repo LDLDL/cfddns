@@ -6,6 +6,7 @@ import os
 import time
 import requests
 import json
+import sources
 from dns import resolver
 from func_timeout import func_set_timeout
 
@@ -32,14 +33,22 @@ headers = {
     'cache-control': 'no-cache'
 }
 
-look_ip_web = {
+ip_sources = {
     'A': [
-        'https://api.ipify.org/',
-        'https://v4.ident.me/'
+        sources.cf_trace('cf-ns.com', 4),
+        sources.ipip(4),
+        sources.cf_trace('162.159.36.1'),
+        sources.simple('https://v4.ident.me/'),
+        sources.cf_trace('1.1.1.1'),
+        sources.simple('https://api.ipify.org/'),
     ],
 
     'AAAA': [
-        'https://v6.ident.me/'
+        sources.cf_trace('cf-ns.com', 6),
+        sources.ipip(6),
+        sources.cf_trace('2606:4700:4700::1111'),
+        sources.simple('https://v6.ident.me/'),
+        sources.cf_trace('2606:4700:4700::64'),
     ]
 }
 
@@ -71,21 +80,17 @@ def get_domain_record(domain: dict, typ: str):
 
 @func_set_timeout(60)
 def get_current_ip(typ: str):
-    index = 0
-    while index < len(look_ip_web[typ]):
+    for source in ip_sources[typ]:
         try:
-            current_ip = requests.get(look_ip_web[typ][index], timeout=15).text
-            if current_ip[-1] == '\n':
-                current_ip = current_ip[:-1]
+            current_ip = source(10)
             if typ == 'A':
                 logger.info(f'Current ipv4 address is {current_ip}.')
             elif typ == 'AAAA':
                 logger.info(f'Current ipv6 address is {current_ip}.')
             return current_ip
         except Exception as err:
-            logger.warning(f'Failed to get ip by using {look_ip_web[typ][index]}, err: "{err}"')
-            index += 1
-    logger.error('Failed to get ip after using all web.')
+            logger.warning(f'Failed to get ip by using {source}, err: "{err}"')
+    logger.error('Failed to get ip after using all sources.')
     return False
 
 
