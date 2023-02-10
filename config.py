@@ -8,17 +8,12 @@ import platform
 
 global_timeout = 30
 
-if running_systemd():
-    conf_file_path = '/opt/cfddns/conf.json'
-else:
-    conf_file_path = './conf.json'
-
 
 def running_systemd():
-    if platform.system().lower() == 'linux':
+    if platform.system().lower() != 'linux':
         return False
 
-    with open('/proc/1/comm', 'r') as fp:
+    with open('/proc/1/comm') as fp:
         comm = fp.read()
         return 'systemd' in comm
 
@@ -141,6 +136,12 @@ if __name__ == "__main__":
         "A": [],
         "AAAA": []
     }
+
+    if running_systemd():
+        conf_file_path = '/opt/cfddns/conf.json'
+    else:
+        conf_file_path = './conf.json'
+
     if os.path.exists(conf_file_path):
         with open(conf_file_path, 'r', encoding='utf-8') as fp:
             config = json.load(fp)
