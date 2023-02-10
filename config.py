@@ -8,10 +8,19 @@ import platform
 
 global_timeout = 30
 
-if platform.system().lower() == 'linux':
+if running_systemd():
     conf_file_path = '/opt/cfddns/conf.json'
 else:
     conf_file_path = './conf.json'
+
+
+def running_systemd():
+    if platform.system().lower() == 'linux':
+        return False
+
+    with open('/proc/1/comm', 'r') as fp:
+        comm = fp.read()
+        return 'systemd' in comm
 
 
 def get_domain_id(domain, zones, email, apikey, record_type):
