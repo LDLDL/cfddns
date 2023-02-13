@@ -4,15 +4,24 @@
 import logging
 import os
 import time
-import requests
 import json
-import sources
+import pathlib
+from argparse import ArgumentParser
+
+import requests
 from func_timeout import func_set_timeout
 
-sleeptime = 600  # sleep seconds
-conf = dict()
+import sources
 
-if not os.path.exists("conf.json"):
+
+parser = ArgumentParser(description='CloudFlare DDNS')
+parser.add_argument('--conf', type=pathlib.Path, default='conf.json')
+parser.add_argument('--log', type=pathlib.Path)
+parser.add_argument('--onetime', action='store_true')
+args = parser.parse_args()
+
+conf = dict()
+if not os.path.exists(args.conf):
     print("Config file not exists, exiting.")
     exit(1)
 with open("conf.json", "r", encoding="utf-8") as fp:
@@ -54,16 +63,16 @@ ip_sources = {
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-log_path = '/tmp/cfddns.log'
-log_file = logging.FileHandler(log_path, mode='a')
-log_file.setLevel(logging.INFO)
-log_file.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s"))
+if (not args.onetime) or args.log:
+    log_path = args.log if args.log else '/tmp/cfddns.log'
+    log_file = logging.FileHandler(log_path, mode='a')
+    log_file.setLevel(logging.INFO)
+    log_file.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s"))
+    logger.addHandler(log_file)
 
 log_console = logging.StreamHandler()
 log_console.setLevel(logging.INFO)
 log_console.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s"))
-
-logger.addHandler(log_file)
 logger.addHandler(log_console)
 
 
@@ -132,38 +141,36 @@ def check_domain():
 
     if len(conf.get('A')):
         current_ipv4 = try_func(5, get_current_ip, 'A')
-        if not current_ipv4:
-            logger.info('sleep 10 minutes')
-            return
-
-        for domain in conf.get('A'):
-            domain_record_ipv4 = try_func(5, get_domain_record, domain, 'A')
-            if not domain_record_ipv4:
-                logger.warning(f'Ignore domain {domain.get("name")}, typ: A')
-                continue
-            if current_ipv4 != domain_record_ipv4:
-                logger.info('IPv4 address changed.')
-                try_func(5, update_domain, domain, 'A', current_ipv4)
+        if current_ipv4:
+            for domain in conf.get('A'):
+                domain_record_ipv4 = try_func(5, get_domain_record, domain, 'A')
+                if not domain_record_ipv4:
+                    logger.warning(f'Ignore domain {domain.get("name")}, typ: A')
+                    continue
+                if current_ipv4 != domain_record_ipv4:
+                    logger.info('IPv4 address changed.')
+                    try_func(5, update_domain, domain, 'A', current_ipv4)
 
     if len(conf.get('AAAA')):
         current_ipv6 = try_func(5, get_current_ip, 'AAAA')
-        if not current_ipv6:
-            logger.info('sleep 10 minutes')
-            return
-
-        for domain in conf.get('AAAA'):
-            domain_record_ipv6 = try_func(5, get_domain_record, domain, 'AAAA')
-            if not domain_record_ipv6:
-                logger.warning(f'Ignore domain {domain.get("name")}, typ: AAAA')
-                continue
-            if current_ipv6 != domain_record_ipv6:
-                logger.info('IPv6 address changed.')
-                try_func(5, update_domain, domain, 'AAAA', current_ipv6)
-
-    logger.info('sleep 10 minutes')
+        if current_ipv6:
+            for domain in conf.get('AAAA'):
+                domain_record_ipv6 = try_func(5, get_domain_record, domain, 'AAAA')
+                if not domain_record_ipv6:
+                    logger.warning(f'Ignore domain {domain.get("name")}, typ: AAAA')
+                    continue
+                if current_ipv6 != domain_record_ipv6:
+                    logger.info('IPv6 address changed.')
+                    try_func(5, update_domain, domain, 'AAAA', current_ipv6)
 
 
 if __name__ == "__main__":
-    while True:
+    sleeptime = 600 # sleep seconds
+
+    if args.onetime:
         check_domain()
-        time.sleep(sleeptime)
+    else:
+        while True:
+            check_domain()
+            logger.info(f'sleep {sleeptime} seconds')
+            time.sleep(sleeptime)
