@@ -39,6 +39,12 @@ pip3 install -r requirements.txt
 
 黒い窓を閉じらないでください。閉じるとスクリプトも終止されています。最小化はかまいません。
 
+## Windowsの自動起動設定方法
+
+1. このプロジェクトのinstall_as_serviceフォルダ内のddns.vbs,run.batをcfddns.pyと同じフォルダにコピーします。それからddns.vbs, run,batのパスを実際のパスに変更します。例えはC:\cfddns
+2. cfddns.reg内のパスも編集します。wscript.exeの後はスクリプトパス。wscript.exeを変更しないでください。
+3. ダブルクリックcfddns.reg、それを有効にします。
+
 ## 配置
 
 配置に先立って、配置したいドメイン名を配置しておきます。

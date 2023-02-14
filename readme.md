@@ -22,6 +22,7 @@ cd cfddns
 pip3 install -r requirements.txt
 ```
 ### 3.运行 
+
 #### Linux 
 
 Linux系统用户可以使用一键安装脚本，执行后输入相关信息即可  
@@ -32,12 +33,20 @@ Linux系统用户可以使用一键安装脚本，执行后输入相关信息即
 #### Windows / MacOS 
 
 1.在终端内进入本项目目录，运行config.py输入相关信息  
+
 Windows下Python命令很可能是python而不是python3  
+
 `python3 ./config.py` 
 
 2.运行cfddns.py
-Windows和MacOS用户需要每次开机执行脚本  
-`python3 ./cfddns.py` 
+
+Windows用户需要配置开机执行脚本
+
+## 配置Windows环境下的自动启动方法
+
+1. 将本项目install_as_service内的ddns.vbs,run.bat放置在cfddns.py同目录下,并且修改ddns.vbs, run,bat内的路径为真实运行的路径，本例为C:\cfddns
+2. 编辑cfddns.reg内的路径，wscript.exe后面的是路径，前面的wscript.exe不要动。
+3. 双击导入cfddns.reg，添加启动项
 
 ## 配置
 
@@ -66,6 +75,7 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 ## 增加域名
 
 ### Linux
+
 如果已经配置完成的脚本，需要增加其他域名，可按以下步骤操作。
 
 1. 进入本项目文件夹，例如cfddns
@@ -74,6 +84,7 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 4. 重新启动服务，输入`systemctl cfddns restart`
 
 ### Windows / MacOS
+
 1.结束cfddns.py运行  
 2.执行config.py  
 3.运行cfddns.py  
