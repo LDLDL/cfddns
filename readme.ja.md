@@ -25,9 +25,26 @@ pip3 install -r requirements.txt
 
 下記のコマンドを実行
 
-`sudo bash install_as_service.sh`
+`sudo bash install_systemd_service.sh`
 
 これで自動的に設定ガイドに入り、配置が完了した後で自動的にシステムサービスとしてインストールされています。
+
+#### 共通システム
+
+##### 手動で実行
+
+1. ターミナルで本プロジェクトのフォルダに入り、`python3 config.py`を実行して必要情報を登録しておきます。  
+2. cfddns.pyを実行
+
+##### スケジュールタスク
+
+1. ターミナルで本プロジェクトのフォルダに入り、`python3 config.py`を実行して必要情報を登録しておきます。  
+2. スケジュールタスクで下記のコマンドを添えます。
+
+`python3 {path to cfddns.py} --onetime --conf {path to conf.json}`
+
+括弧内のpath to cfddns.pyは実際の絶対パスに替えてください。
+デフォルトでログはファイルに保存していない。--log ファイル名のパラメータでログファイルの出力を指定できます。
 
 #### Windows / MacOS 
 
@@ -41,7 +58,7 @@ pip3 install -r requirements.txt
 
 ## Windowsの自動起動設定方法
 
-1. このプロジェクトのinstall_as_serviceフォルダ内のddns.vbs,run.batをcfddns.pyと同じフォルダにコピーします。それからddns.vbs, run,batのパスを実際のパスに変更します。例えはC:\cfddns
+1. このプロジェクトのinstall_systemd_serviceフォルダ内のddns.vbs,run.batをcfddns.pyと同じフォルダにコピーします。それからddns.vbs, run,batのパスを実際のパスに変更します。例えはC:\cfddns
 2. cfddns.reg内のパスも編集します。wscript.exeの後はスクリプトパス。wscript.exeを変更しないでください。
 3. ダブルクリックcfddns.reg、それを有効にします。
 
@@ -51,7 +68,7 @@ pip3 install -r requirements.txt
 
 例えばddns.example.comは配置したい場合は、まずCloudFlareのコントロールパネルでAレコードまたAAAAレコードに追加。そのIPアドレスは自分が使っているIPと同じではいけない。（同じにすればいいですが、すぐに動作するかどうかはわかりにくいですから）
 
-install_as_service.shを実行すると、配置メニューに入ります。
+install_systemd_service.shを実行すると、配置メニューに入ります。
 
 ![g00](https://user-images.githubusercontent.com/81149482/129917531-d499ae47-79ab-44b0-910b-e1f2a98fc68c.png)
 
@@ -81,7 +98,7 @@ domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコ�
 4. サービスを起動する。`systemctl cfddns restart`
 
 
-### Windows / MacOS
+### 共通システム
 
 1. cfddns.pyを終止する
 2. config.pyを実行して新しいドメイン情報を入力する
@@ -89,6 +106,6 @@ domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコ�
 
 ## エラーに対して問題
 
-install_as_service.shを実行する際にインストできない場合は、ご使用中のシステムのsystemdフォルダを探して、それからcfddns.serviceをそれに入っておきます。
+install_systemd_service.shを実行する際にインストできない場合は、ご使用中のシステムのsystemdフォルダを探して、それからcfddns.serviceをそれに入っておきます。
 
 もしエラーがpython3が見つかりませんったら、その場合は（もしWindowsの場合はPythonを書き換える）cfddns.serviceでpython3の絶対パスに書き換えます。（ここで相対パスに入力すればたまに動作可能ですが、交換性を保つため絶対パスに入力するのがお勧めです。）

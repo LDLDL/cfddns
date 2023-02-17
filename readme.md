@@ -28,20 +28,20 @@ pip3 install -r requirements.txt
 Linux系统用户可以使用一键安装脚本，执行后输入相关信息即可  
 脚本作为systemd服务开机自启动  
 
-`sudo bash install_as_service.sh` 
+`sudo bash install_systemd_service.sh` 
 
 脚本会自动运行config.py
 
-#### Common os
+#### 通用系统
 
 ##### 手动运行
 
-1.在终端内进入本项目目录，运行config.py输入相关信息  
+1.在终端内进入本项目目录，运行`python3 config.py`并输入相关信息  
 2.运行cfddns.py
 
 ##### 计划任务
 
-1.在终端内进入本项目目录，运行config.py输入相关信息
+1.在终端内进入本项目目录，运行`python3 config.py`输入相关信息
 2.在计划任务中加入命令
 
 `python3 {path to cfddns.py} --onetime --conf {path to conf.json}`
@@ -90,7 +90,7 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 3. 按3，像第一次安装一样增加域名。
 4. 重新启动服务，输入`systemctl cfddns restart`
 
-### Common os
+### 通用方法
 
 1.结束cfddns.py运行  
 2.执行config.py  
@@ -98,6 +98,6 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 
 ## 可能的问题
 
-若install_systemd_service.sh出现无法安装到系统服务时，请搜索正在使用着的系统systemd文件存放位置，并将cfddns.service复制进对应的文件夹。
+若install_systemd_service.sh出现无法安装到系统服务时，请搜索当前系统的systemd文件存放位置，并将cfddns.service复制进对应的文件夹。
 
 若提示python3不存在，可尝试修改cfddns.service内的python3绝对路径（为确保兼容性，请书写绝对路径，尽管有些系统相对路径依旧可以执行）
