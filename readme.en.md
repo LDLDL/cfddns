@@ -37,6 +37,11 @@ If Python3 is not found, try change command to python to run it.
 
 Do not close the window or it will be closed.
 
+### The auto-start on boot of Windows user
+
+1. copy the ddns.vbs,run.bat which on the install_as_service folder. then edit the actually path on the ddns.vbs and run.bat. This example is C:\cfddns
+2. Edit the cfddns.reg path. the string after wscript.exe is the path, don't edit wscript.exe.
+3. double click the cfddns.reg to enable it.
 
 ## Configure
 

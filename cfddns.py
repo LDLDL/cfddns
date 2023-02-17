@@ -7,7 +7,7 @@ import time
 import json
 import pathlib
 from argparse import ArgumentParser
-
+import platform
 import requests
 from func_timeout import func_set_timeout
 
@@ -62,9 +62,13 @@ ip_sources = {
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+if os.path.exists('/tmp'):
+    default_log_path = '/tmp/cfddns.log'
+else:
+    default_log_path = os.path.join(os.getcwd(), 'cfddns.log')
 
 if (not args.onetime) or args.log:
-    log_path = args.log if args.log else '/tmp/cfddns.log'
+    log_path = args.log if args.log else default_log_path
     log_file = logging.FileHandler(log_path, mode='a')
     log_file.setLevel(logging.INFO)
     log_file.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s"))
