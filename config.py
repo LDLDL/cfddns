@@ -137,9 +137,8 @@ if __name__ == "__main__":
         "AAAA": []
     }
 
-    if running_systemd():
-        conf_file_path = '/opt/cfddns/conf.json'
-    else:
+    conf_file_path = '/opt/cfddns/conf.json'
+    if not os.path.exists(conf_file_path):
         conf_file_path = './conf.json'
 
     if os.path.exists(conf_file_path):
