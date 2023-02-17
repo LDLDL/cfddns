@@ -62,12 +62,13 @@ ip_sources = {
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-if platform.system().lower() != "linux":
-    platform_log = f"{os.getcwd()}\cfddns.log"
+if os.path.exists('/tmp'):
+    default_log_path = '/tmp/cfddns.log'
 else:
-    platform_log = '/tmp/cfddns.log'
+    default_log_path = os.path.join(os.getcwd(), 'cfddns.log')
+
 if (not args.onetime) or args.log:
-    log_path = args.log if args.log else platform_log
+    log_path = args.log if args.log else default_log_path
     log_file = logging.FileHandler(log_path, mode='a')
     log_file.setLevel(logging.INFO)
     log_file.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s"))
