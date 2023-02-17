@@ -24,7 +24,7 @@ conf = dict()
 if not os.path.exists(args.conf):
     print("Config file not exists, exiting.")
     exit(1)
-with open("conf.json", "r", encoding="utf-8") as fp:
+with open(args.conf, "r", encoding="utf-8") as fp:
     conf = json.load(fp)
 
 zones = conf.get('zones')
