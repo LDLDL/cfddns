@@ -46,17 +46,7 @@ pip3 install -r requirements.txt
 括弧内のpath to cfddns.pyは実際の絶対パスに替えてください。
 デフォルトでログはファイルに保存していない。--log ファイル名のパラメータでログファイルの出力を指定できます。
 
-#### Windows / MacOS 
-
-1.コンソールを開け(Windowsの場合はPowerShell また　cmd)、このプロジェクトのフォルダに入り、`python3 ./config.py`で実行する
-
-もしPython3がないのエラー情報が表示しましたら、Python3ではなくPythonで再び実行する.
-
-2.設定ガイドが完了すれば、コンソールで `python3 ./cfddns.py`.を実行する
-
-黒い窓を閉じらないでください。閉じるとスクリプトも終止されています。最小化はかまいません。
-
-## Windowsの自動起動設定方法
+#### Windowsの自動起動設定方法
 
 1. このプロジェクトのinstall_systemd_serviceフォルダ内のddns.vbs,run.batをcfddns.pyと同じフォルダにコピーします。それからddns.vbs, run,batのパスを実際のパスに変更します。例えはC:\cfddns
 2. cfddns.reg内のパスも編集します。wscript.exeの後はスクリプトパス。wscript.exeを変更しないでください。

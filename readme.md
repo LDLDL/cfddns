@@ -49,7 +49,7 @@ Linux系统用户可以使用一键安装脚本，执行后输入相关信息即
 请替换花括号内路径，请使用绝对路径
 默认不log到文件，可用--log参数log到指定文件
 
-### Windows service
+#### Windows service
 
 1. 将本项目Windows service内的ddns.vbs,run.bat放置在cfddns.py同目录下,并且修改ddns.vbs, run,bat内的路径为真实运行的路径，本例为C:\cfddns
 2. 编辑cfddns.reg内的路径，wscript.exe后面的是路径，前面的wscript.exe不要动。

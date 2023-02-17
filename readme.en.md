@@ -42,19 +42,9 @@ to install this script and set it as system service.
 `python3 {path to cfddns.py} --onetime --conf {path to conf.json}`
 
 Please replace the path to cfddns.py with your real file path.(absolute path)
-By default setting, there won't log to file. You can use --log filename parameter to write it to the specific file.
+By default, it won't log to file. You can use --log filename parameter to write it to the specific file.
 
-#### Windows / MacOS 
-
-1.Open terminal (Windows is PowerShell or cmd), open this project's folder and run with `python3 ./config.py`
-
-If Python3 is not found, try change command to python to run it.
-
-2.When you complete the configuration, just run with `python3 ./cfddns.py`.
-
-Do not close the window or it will be closed.
-
-### The auto-start on boot of Windows user
+#### The auto-start on boot of Windows user
 
 1. copy the ddns.vbs,run.bat which on the install_systemd_service folder. then edit the actually path on the ddns.vbs and run.bat. This example is C:\cfddns
 2. Edit the cfddns.reg path. the string after wscript.exe is the path, don't edit wscript.exe.
