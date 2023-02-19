@@ -66,7 +66,7 @@ logger.setLevel(logging.INFO)
 if (not args.onetime) or args.log:
     if args.log:
         log_path = args.log
-    elif os.path.exists('tmp'):
+    elif os.path.exists('/tmp'):
         log_path = '/tmp/cfddns.log'
     else:
         log_path = os.path.join(os.getcwd(), 'cfddns.log')
