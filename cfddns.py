@@ -18,6 +18,7 @@ parser = ArgumentParser(description='CloudFlare DDNS')
 parser.add_argument('--conf', type=pathlib.Path, default='conf.json')
 parser.add_argument('--log', type=pathlib.Path)
 parser.add_argument('--onetime', action='store_true')
+parser.add_argument('--usedns', action='store_true')
 args = parser.parse_args()
 
 conf = dict()
@@ -82,7 +83,7 @@ logger.addHandler(log_console)
 
 
 @func_set_timeout(30)
-def get_domain_record(domain: dict, typ: str):
+def get_domain_record_cfapi(domain: dict, typ: str):
     url = f"https://api.cloudflare.com/client/v4/zones/{zones}/dns_records"
     response = json.loads(requests.get(url, {
         "type": typ,
@@ -92,6 +93,22 @@ def get_domain_record(domain: dict, typ: str):
         logger.info(f'Domain: {domain.get("name")}, typ: {typ} record ip is {i["content"]}.')
         return i["content"]
     logger.error(f'Failed to resolve domain: {domain.get("name")}, typ: {typ}.')
+
+
+@func_set_timeout(30)
+def get_domain_record_dns(domain: dict, typ: str):
+    ans = resolver.resolve(domain.get("name"), typ, search=True)
+    for i in ans.response.answer:
+        for j in i.items:
+            logger.info(f'Domain: {domain.get("name")}, typ: {typ} record ip is {j.address}.')
+            return j.address
+    logger.error(f'Failed ro resolve domain: {domain.get("name")}, typ:{typ}.')
+
+
+get_domain_record = get_domain_record_cfapi
+if args.usedns:
+    from dns import resolver
+    get_domain_record = get_domain_record_dns
 
 
 @func_set_timeout(60)
@@ -179,3 +196,4 @@ if __name__ == "__main__":
             check_domain()
             logger.info(f'sleep {sleeptime} seconds')
             time.sleep(sleeptime)
+

@@ -8,6 +8,7 @@ then
 fi
 
 
+sudo pip3 install -r requirements.txt
 mkdir -p /opt/cfddns
 python3 ./config.py
 cp conf.json /opt/cfddns/
