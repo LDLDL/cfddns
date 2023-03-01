@@ -23,11 +23,11 @@ pip3 install -r requirements.txt
 
 ### 実行パラメータ
 
-[--conf] ファイルパス。ロードされる配置ファイルのパスを指定する。デフォルトは現在のフォルダーのconf.jsonです。
-[--log] ファイルパス，ログファイルの保存パスを指定します。
-[--onetime] IPアドレスが一回通知完了後終了します。Crontab向けパラメータです。
-[--usedns] 現在のドメインIPアドレスを取得時にCloudFlare APIで確認しない。DNSで名称解決を行います。
-[--nolog] ログを記録しません。コンソールだけに出力します。
+- [--conf] ファイルパス。ロードされる配置ファイルのパスを指定する。デフォルトは現在のフォルダーのconf.jsonです。
+- [--log] ファイルパス，ログファイルの保存パスを指定します。
+- [--onetime] IPアドレスが一回通知完了後終了します。Crontab向けパラメータです。
+- [--usedns] 現在のドメインIPアドレスを取得時にCloudFlare APIで確認しない。DNSで名称解決を行います。
+- [--nolog] ログを記録しません。コンソールだけに出力します。
 
 #### Linux
 
@@ -93,7 +93,7 @@ domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコ�
 1. このプロジェクトのフォルダに入る。例えばcfddns
 2. `sudo python3 ./config.py`を実行
 3. 3を押して、最初と同じドメイン名を追加する。
-4. サービスを起動する。`systemctl cfddns restart`
+4. サービスを起動する。`systemctl restart cfddns`
 
 
 ### 共通システム

@@ -25,11 +25,11 @@ pip3 install -r requirements.txt
 
 ### 运行参数
 
-[--conf] 文件路径，用于指定载入的配置文件路径，默认为当前文件夹下的conf.json。
-[--log] 文件路径，用于指定日志文件的保存路径。
-[--onetime] 仅进行一次地址上报后就退出程序。适用于Crontab计划任务。
-[--usedns] 获取当前域名的IP时不使用CloudFlare API方式检查，而是使用DNS解析域名。
-[--nolog] 不记录日志，只对控制台输出日志。
+- [--conf] 文件路径，用于指定载入的配置文件路径，默认为当前文件夹下的conf.json。
+- [--log] 文件路径，用于指定日志文件的保存路径。
+- [--onetime] 仅进行一次地址上报后就退出程序。适用于Crontab计划任务。
+- [--usedns] 获取当前域名的IP时不使用CloudFlare API方式检查，而是使用DNS解析域名。
+- [--nolog] 不记录日志，只对控制台输出日志。
 
 #### Linux systemd service
 
@@ -44,13 +44,13 @@ Linux系统用户可以使用一键安装脚本，执行后输入相关信息即
 
 ##### 手动运行
 
-1.在终端内进入本项目目录，运行`python3 config.py`并输入相关信息  
-2.运行cfddns.py
+1. 在终端内进入本项目目录，运行`python3 config.py`并输入相关信息  
+2. 运行cfddns.py
 
 ##### 计划任务
 
-1.在终端内进入本项目目录，运行`python3 config.py`输入相关信息
-2.在计划任务中加入命令
+1. 在终端内进入本项目目录，运行`python3 config.py`输入相关信息
+2. 在计划任务中加入命令
 
 `python3 {path to cfddns.py} --onetime --conf {path to conf.json}`
 
@@ -98,13 +98,13 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 1. 进入本项目文件夹，例如cfddns
 2. 执行`sudo python3 ./config.py`
 3. 按3，像第一次安装一样增加域名。
-4. 重新启动服务，输入`systemctl cfddns restart`
+4. 重新启动服务，输入`systemctl restart cfddns`
 
 ### 通用使用方法
 
-1.结束cfddns.py运行  
-2.执行config.py  
-3.运行cfddns.py  
+1. 结束cfddns.py运行  
+2. 执行config.py  
+3. 运行cfddns.py  
 
 ## 可能存在的问题
 
