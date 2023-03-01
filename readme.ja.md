@@ -93,7 +93,7 @@ domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコ�
 1. このプロジェクトのフォルダに入る。例えばcfddns
 2. `sudo python3 ./config.py`を実行
 3. 3を押して、最初と同じドメイン名を追加する。
-4. サービスを起動する。`systemctl cfddns restart`
+4. サービスを起動する。`systemctl restart cfddns`
 
 
 ### 共通システム

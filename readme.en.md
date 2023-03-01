@@ -92,7 +92,7 @@ If you want to add more domain, Just follow this guide:
 1. Enter this project's folder. For example cd cfddns
 2. Run `sudo python3 ./config.py`
 3. Press 3, Just add the domain likes new install.
-4. Restart the service. `systemctl cfddns restart`
+4. Restart the service. `systemctl restart cfddns`
 
 ### Common OS
 
