@@ -21,6 +21,14 @@ pip3 install -r requirements.txt
 ```
 ### 3.実行
 
+### 実行パラメータ
+
+[--conf] ファイルパス。ロードされる配置ファイルのパスを指定する。デフォルトは現在のフォルダーのconf.jsonです。
+[--log] ファイルパス，ログファイルの保存パスを指定します。
+[--onetime] IPアドレスが一回通知完了後終了します。Crontab向けパラメータです。
+[--usedns] 現在のドメインIPアドレスを取得時にCloudFlare APIで確認しない。DNSで名称解決を行います。
+[--nolog] ログを記録しません。コンソールだけに出力します。
+
 #### Linux
 
 下記のコマンドを実行
@@ -34,7 +42,7 @@ pip3 install -r requirements.txt
 ##### 手動で実行
 
 1. ターミナルで本プロジェクトのフォルダに入り、`python3 config.py`を実行して必要情報を登録しておきます。  
-2. cfddns.pyを実行
+2. `python3 cfddns.py`を実行
 
 ##### スケジュールタスク
 
@@ -44,7 +52,7 @@ pip3 install -r requirements.txt
 `python3 {path to cfddns.py} --onetime --conf {path to conf.json}`
 
 括弧内のpath to cfddns.pyは実際の絶対パスに替えてください。
-デフォルトでログはファイルに保存していない。--log ファイル名のパラメータでログファイルの出力を指定できます。
+Onetimeモードでデフォルトログはファイルに保存していない。--log ファイル名のパラメータでログファイルの出力を指定できます。
 
 #### Windowsの自動起動設定方法
 
@@ -74,7 +82,7 @@ Domain: 配置したいドメイン名。例えばddns.example.com
 
 domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコード、AAAAはAAAAレコードです。
 
-全部が完了した後で、もしエラー情報が返したら、もう一度API Tokenなど配置したものをしっかり確認するのが必要だと思います。
+全部が完了した後、もしエラー情報が返したら、もう一度API Tokenなど配置したものをしっかり確認するのが必要だと思います。
 
 ## ドメイン名の追加
 
