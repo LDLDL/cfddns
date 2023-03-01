@@ -65,6 +65,8 @@ onetime模式下默认不log到文件，可用--log参数log到指定文件
 
 ![g00](https://user-images.githubusercontent.com/81149482/129917531-d499ae47-79ab-44b0-910b-e1f2a98fc68c.png)
 
+输入0配置API Key
+
 Email: 输入CloudFlare的登录邮箱即可。
 
 Zones: 对应域名的Overview界面，右下角的 区域ID，点击复制
