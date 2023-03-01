@@ -21,11 +21,11 @@ pip3 install -r requirements.txt
 
 ### Parameter
 
-[--conf] File path. It's use for load the specific config. default is conf.json on current directory.
-[--log] File path. It's use for save log file.
-[--onetime] Only report IP address one time. It's useful for Crontab.
-[--usedns] When checking the IP address of current domain, use DNS instead of CloudFlare API.
-[--nolog] Don't write the log. Only output the log to console.
+- [--conf] File path. It's use for load the specific config. default is conf.json on current directory.
+- [--log] File path. It's use for save log file.
+- [--onetime] Only report IP address one time. It's useful for Crontab.
+- [--usedns] When checking the IP address of current domain, use DNS instead of CloudFlare API.
+- [--nolog] Don't write the log. Only output the log to console.
 
 #### Linux systemd service
 
