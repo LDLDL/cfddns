@@ -23,6 +23,14 @@ pip3 install -r requirements.txt
 ```
 ### 3.运行 
 
+### 运行参数
+
+[--conf] 文件路径，用于指定载入的配置文件路径，默认为当前文件夹下的conf.json。
+[--log] 文件路径，用于指定日志文件的保存路径。
+[--onetime] 仅进行一次地址上报后就退出程序。适用于Crontab计划任务。
+[--usedns] 获取当前域名的IP时不使用CloudFlare API方式检查，而是使用DNS解析域名。
+[--nolog] 不记录日志，只对控制台输出日志。
+
 #### Linux systemd service
 
 Linux系统用户可以使用一键安装脚本，执行后输入相关信息即可  
@@ -46,10 +54,10 @@ Linux系统用户可以使用一键安装脚本，执行后输入相关信息即
 
 `python3 {path to cfddns.py} --onetime --conf {path to conf.json}`
 
-请替换花括号内路径，请使用绝对路径  
-onetime模式下默认不log到文件，可用--log参数log到指定文件  
+请替换花括号内的路径(需为绝对路径)
+onetime模式下默认不将日志输出到文件，可用--log参数将日志保存到指定文件  
 
-#### Windows service
+#### Windows 自启动服务
 
 1. 将本项目Windows service内的ddns.vbs,run.bat放置在cfddns.py同目录下,并且修改ddns.vbs, run,bat内的路径为真实运行的路径，本例为C:\cfddns
 2. 编辑cfddns.reg内的路径，wscript.exe后面的是路径，前面的wscript.exe不要动。
@@ -59,9 +67,9 @@ onetime模式下默认不log到文件，可用--log参数log到指定文件
 
 配置之前需要把想配置的域名都配置好解析记录。
 
-例如想要为ddns.example.com配置A和AAAA记录，需要事先在CloudFlare增加一条A记录和AAAA记录，并且IP不能为本机IP。（虽然可以是本机IP，但无法立即验证脚本是否起作用了）
+例如想要为ddns.example.com配置A和AAAA记录，需要事先在CloudFlare增加一条A记录和AAAA记录，A和AAAA记录最好不要指向本机IP(虽然可以指向本机IP，但无法立即验证DDNS是否起作用了)
 
-运行config.py进入配置菜单。
+运行`python3 config.py`进入配置菜单。
 
 ![g00](https://user-images.githubusercontent.com/81149482/129917531-d499ae47-79ab-44b0-910b-e1f2a98fc68c.png)
 
@@ -92,14 +100,14 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 3. 按3，像第一次安装一样增加域名。
 4. 重新启动服务，输入`systemctl cfddns restart`
 
-### 通用方法
+### 通用使用方法
 
 1.结束cfddns.py运行  
 2.执行config.py  
 3.运行cfddns.py  
 
-## 可能的问题
+## 可能存在的问题
 
 若install_systemd_service.sh出现无法安装到系统服务时，请搜索当前系统的systemd文件存放位置，并将cfddns.service复制进对应的文件夹。
 
-若提示python3不存在，可尝试修改cfddns.service内的python3绝对路径（为确保兼容性，请书写绝对路径，尽管有些系统相对路径依旧可以执行）
+若提示python3不存在，可尝试修改cfddns.service内的python3绝对路径(为确保兼容性，请输入绝对路径，尽管有些系统相对路径依旧可以执行)
