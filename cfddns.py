@@ -19,6 +19,7 @@ parser.add_argument('--conf', type=pathlib.Path, default='conf.json')
 parser.add_argument('--log', type=pathlib.Path)
 parser.add_argument('--onetime', action='store_true')
 parser.add_argument('--usedns', action='store_true')
+parser.add_argument('--nolog', action='store_true')
 args = parser.parse_args()
 
 conf = dict()
@@ -64,7 +65,7 @@ ip_sources = {
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-if (not args.onetime) or args.log:
+if not args.nolog and (not args.onetime or args.log):
     if args.log:
         log_path = args.log
     elif os.path.exists('/tmp'):
