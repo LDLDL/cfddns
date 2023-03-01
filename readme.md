@@ -46,8 +46,8 @@ Linux系统用户可以使用一键安装脚本，执行后输入相关信息即
 
 `python3 {path to cfddns.py} --onetime --conf {path to conf.json}`
 
-请替换花括号内路径，请使用绝对路径
-默认不log到文件，可用--log参数log到指定文件
+请替换花括号内路径，请使用绝对路径  
+onetime模式下默认不log到文件，可用--log参数log到指定文件  
 
 #### Windows service
 
