@@ -25,7 +25,7 @@ pip3 install -r requirements.txt
 
 - [--conf] ファイルパス。ロードされる配置ファイルのパスを指定する。デフォルトは現在のフォルダーのconf.jsonです。
 - [--log] ファイルパス，ログファイルの保存パスを指定します。
-- [--onetime] IPアドレスが一回通知完了後終了します。Crontab向けパラメータです。
+- [--onetime] IPアドレスが一回確認完了後終了します。Crontab向けパラメータです。
 - [--usedns] 現在のドメインIPアドレスを取得時にCloudFlare APIで確認しない。DNSで名称解決を行います。
 - [--nolog] ログを記録しません。コンソールだけに出力します。
 
@@ -36,6 +36,12 @@ pip3 install -r requirements.txt
 `sudo bash install_systemd_service.sh`
 
 これで自動的に設定ガイドに入り、配置が完了した後で自動的にシステムサービスとしてインストールされています。
+
+もしsystemdがインストールされていない場合、crontabも使えます。
+
+例： `*/10 * * * * /usr/local/bin/python3 /home/cfddns.py --onetime`
+
+これは十分ごとIPアドレスを確認し、もし変更が発生したらCloudFlareに通知します。
 
 #### 共通システム
 
@@ -62,7 +68,7 @@ Onetimeモードでデフォルトログはファイルに保存していない�
 
 ## 配置
 
-配置に先立って、配置したいドメイン名を配置しておきます。
+配置の前に、配置したいドメイン名を配置しておきます。
 
 例えばddns.example.comは配置したい場合は、まずCloudFlareのコントロールパネルでAレコードまたAAAAレコードに追加。そのIPアドレスは自分が使っているIPと同じではいけない。（同じにすればいいですが、すぐに動作するかどうかはわかりにくいですから）
 

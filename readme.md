@@ -4,7 +4,7 @@
 
 一个使用python3实现的CloudFlare DDNS脚本
 
-## 系统要求
+## 运行要求
 
 python >=3.6
 
@@ -31,14 +31,20 @@ pip3 install -r requirements.txt
 - [--usedns] 获取当前域名的IP时不使用CloudFlare API方式检查，而是使用DNS解析域名, 使用此选项需要额外安装dnspython库。
 - [--nolog] 不记录日志到文件，只对控制台输出日志。
 
-#### Linux systemd service
+#### Linux Systemd 服务安装
 
 Linux系统用户可以使用一键安装脚本，执行后输入相关信息即可  
 脚本作为systemd服务开机自启动  
 
 `sudo bash install_systemd_service.sh` 
 
-脚本会自动运行config.py
+脚本会自动运行config.py来配置必须内容。
+
+若系统内没有Systemd，可以使用Crontab。
+
+例 `*/10 * * * * /usr/local/bin/python3 /home/cfddns.py --onetime`
+
+上述crontab含义为每隔十分钟检查一次IP并根据IP变动情况上报地址。
 
 #### 通用系统
 
