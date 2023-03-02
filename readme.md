@@ -29,7 +29,7 @@ pip3 install -r requirements.txt
 - [--log] 文件路径，用于指定日志文件的保存路径。
 - [--onetime] 仅进行一次地址检查后就退出程序。适用于Crontab计划任务。
 - [--usedns] 获取当前域名的IP时不使用CloudFlare API方式检查，而是使用DNS解析域名, 使用此选项需要额外安装dnspython库。
-- [--nolog] 不记录日志，只对控制台输出日志。
+- [--nolog] 不记录日志到文件，只对控制台输出日志。
 
 #### Linux systemd service
 
