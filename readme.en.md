@@ -37,11 +37,7 @@ to install this script and set it as system service.
 
 It will run the config.py to configure the essential information.
 
-If your system don't have systemd, you can use crontab.
-
-For example `*/10 * * * * /usr/local/bin/python3 /home/cfddns.py --onetime`
-
-This means check ip address per 10 minutes and report address if address has been changed.
+If your system don't have systemd, see scheduled tasks below.
 
 #### Common OS
 
@@ -61,6 +57,12 @@ Please replace the path to cfddns.py with your real file path.(absolute path)
 
 In the onetime mode, default it won't log to file. You can use --log filename parameter to write it to the specific file.
 
+For example, crontab can use this configuration
+
+`*/10 * * * * /usr/local/bin/python3 /home/user/cfddns/cfddns.py --onetime --conf /home/user/cfddns/conf.json`
+
+This means check ip address per 10 minutes and report address if address has been changed.
+
 #### The auto-start on boot of Windows user
 
 1. copy the ddns.vbs,run.bat which on the install_systemd_service folder. then edit the actually path on the ddns.vbs and run.bat. This example is C:\cfddns
@@ -76,6 +78,8 @@ For example, Add the ddns.example.com and set A Record and AAAA Record in the Cl
 Then run the install_systemd_service.sh, it will enter the configure menu.
 
 ![g00](https://user-images.githubusercontent.com/81149482/129917531-d499ae47-79ab-44b0-910b-e1f2a98fc68c.png)
+
+Input 0 and setup api key
 
 Email: CloudFlare's login email.
 
@@ -95,18 +99,22 @@ If error messages shows up, that means somethings wrong in configure, please rec
 
 If you want to add more domain, Just follow this guide:
 
-### Linux
+### Linux Systemd service
 
-1. Enter this project's folder. For example cd cfddns
-2. Run `sudo python3 ./config.py`
-3. Press 3, Just add the domain likes new install.
-4. Restart the service. `systemctl restart cfddns`
+1. Run config.py
+2. Add or delete the domain.
+3. Restart the service. `systemctl restart cfddns`
+
+### Scheduled Tasks
+
+1. Run config.py
+2. Add or delete the domain.
 
 ### Common OS
 
 1. Close the cfddns.py
-2. Re run config.py
-3. Start cfddns.py
+2. Run config.py
+3. Restart cfddns.py
 
 ## Possibly issues
 

@@ -40,11 +40,7 @@ Linux系统用户可以使用一键安装脚本，执行后输入相关信息即
 
 脚本会自动运行config.py来配置必须内容。
 
-若系统内没有Systemd，可以使用Crontab。
-
-例 `*/10 * * * * /usr/local/bin/python3 /home/cfddns.py --onetime`
-
-上述crontab含义为每隔十分钟检查一次IP并根据IP变动情况上报地址。
+若系统内没有Systemd，见下述计划任务使用方式。
 
 #### 通用系统
 
@@ -60,8 +56,14 @@ Linux系统用户可以使用一键安装脚本，执行后输入相关信息即
 
 `python3 {path to cfddns.py} --onetime --conf {path to conf.json}`
 
-请替换花括号内的路径(需为绝对路径)
+请替换花括号内的路径(需为绝对路径)  
 onetime模式下默认不将日志输出到文件，可用--log参数将日志保存到指定文件  
+
+例如Crontab可以使用以下配置  
+
+`*/10 * * * * /usr/local/bin/python3 /home/user/cfddns/cfddns.py --onetime --conf /home/user/cfddns/conf.json`
+
+含义为每隔十分钟检查一次IP并根据IP变动情况上报地址。  
 
 #### Windows 自启动服务
 
@@ -97,20 +99,24 @@ domain record type(A for v4, AAAA for v6)：输入类型，A是A记录，AAAA是
 
 ## 增加域名
 
-### Linux
+### Linux Systemd 服务
 
 如果已经配置完成的脚本，需要增加其他域名，可按以下步骤操作。
 
-1. 进入本项目文件夹，例如cfddns
-2. 执行`sudo python3 ./config.py`
-3. 按3，像第一次安装一样增加域名。
-4. 重新启动服务，输入`systemctl restart cfddns`
+1. 执行config.py
+2. 增加或删除域名。
+3. 重新启动服务，输入`systemctl restart cfddns`
+
+### 计划任务
+
+1. 执行config.py
+2. 增加或删除域名。
 
 ### 通用使用方法
 
 1. 结束cfddns.py运行  
 2. 执行config.py  
-3. 运行cfddns.py  
+3. 重新运行cfddns.py  
 
 ## 可能存在的问题
 
