@@ -2,7 +2,7 @@
 
 CloudFlare DDNS Python3 Script.
 
-## System Requirement
+## Software Requirement
 
 python >=3.6
 
@@ -34,6 +34,14 @@ You can use command:
 `sudo bash install_systemd_service.sh`
 
 to install this script and set it as system service.
+
+It will run the config.py to configure the essential information.
+
+If your system don't have systemd, you can use crontab.
+
+For example `*/10 * * * * /usr/local/bin/python3 /home/cfddns.py --onetime`
+
+This means check ip address per 10 minutes and report address if address has been changed.
 
 #### Common OS
 
