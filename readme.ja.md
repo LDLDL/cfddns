@@ -37,11 +37,7 @@ pip3 install -r requirements.txt
 
 これで自動的に設定ガイドに入り、配置が完了した後で自動的にシステムサービスとしてインストールされています。
 
-もしsystemdがインストールされていない場合、crontabも使えます。
-
-例： `*/10 * * * * /usr/local/bin/python3 /home/cfddns.py --onetime`
-
-これは十分ごとIPアドレスを確認し、もし変更が発生したらCloudFlareに通知します。
+もしsystemdがインストールされていない場合、crontabも使えます。下記のスケジュールタスクに参照します。
 
 #### 共通システム
 
@@ -60,6 +56,10 @@ pip3 install -r requirements.txt
 括弧内のpath to cfddns.pyは実際の絶対パスに替えてください。
 Onetimeモードでデフォルトログはファイルに保存していない。--log ファイル名のパラメータでログファイルの出力を指定できます。
 
+Crontab例： `*/10 * * * * /usr/local/bin/python3 /home/cfddns.py --onetime`
+
+これは十分ごとIPアドレスを確認し、もし変更が発生したらCloudFlareに通知します。
+
 #### Windowsの自動起動設定方法
 
 1. このプロジェクトのinstall_systemd_serviceフォルダ内のddns.vbs,run.batをcfddns.pyと同じフォルダにコピーします。それからddns.vbs, run,batのパスを実際のパスに変更します。例えはC:\cfddns
@@ -75,6 +75,8 @@ Onetimeモードでデフォルトログはファイルに保存していない�
 install_systemd_service.shを実行すると、配置メニューに入ります。
 
 ![g00](https://user-images.githubusercontent.com/81149482/129917531-d499ae47-79ab-44b0-910b-e1f2a98fc68c.png)
+
+0を入力してAPIキーを設定します。
 
 Email: CloudFlareで登録したメールアドレスです。
 
@@ -94,21 +96,24 @@ domain record type(A for v4, AAAA for v6)：レコードの種類。AはAレコ�
 
 もしすでに配置しましたスクリプトに新しいドメイン名を追加したい場合は、下記の通りに従います。
 
-### Linux
+### Linux Systemd サービス
 
-1. このプロジェクトのフォルダに入る。例えばcfddns
-2. `sudo python3 ./config.py`を実行
-3. 3を押して、最初と同じドメイン名を追加する。
-4. サービスを起動する。`systemctl restart cfddns`
+1. config.pyを実行。
+2. ドメインを新規作成または削除。
+3. サービスを再起動。`systemctl restart cfddns`で再起動します。
 
+### スケジュールタスク
+
+1. config.pyを実行。
+2. ドメインを新規作成または削除。
 
 ### 共通システム
 
 1. cfddns.pyを終止する
 2. config.pyを実行して新しいドメイン情報を入力する
-3. 設定ガイドが完了した後でcfddns.pyを実行する
+3. 設定ガイドが完了した後で再度にcfddns.pyを実行する
 
-## エラーに対して問題
+## 一部のエラーに対して問題の解決方法
 
 install_systemd_service.shを実行する際にインストできない場合は、ご使用中のシステムのsystemdフォルダを探して、それからcfddns.serviceをそれに入っておきます。
 
