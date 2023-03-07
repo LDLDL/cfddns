@@ -56,7 +56,7 @@ pip3 install -r requirements.txt
 括弧内のpath to cfddns.pyは実際の絶対パスに替えてください。
 Onetimeモードでデフォルトログはファイルに保存していない。--log ファイル名のパラメータでログファイルの出力を指定できます。
 
-Crontab例： `*/10 * * * * /usr/local/bin/python3 /home/cfddns.py --onetime`
+Crontab例： `*/10 * * * * /usr/local/bin/python3 /home/user/cfddns/cfddns.py --onetime --conf /home/user/cfddns/conf.json`
 
 これは十分ごとIPアドレスを確認し、もし変更が発生したらCloudFlareに通知します。
 
