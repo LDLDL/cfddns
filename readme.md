@@ -1,3 +1,10 @@
+# Use new CloudFlare DDns Go implement
+<br>
+
+[LDLDL/cfddns-go](https://github.com/LDLDL/cfddns-go)  
+
+<br>
+
 # CloudFlare DDNS脚本
 
 [English](readme.en.md)|[日本語説明](readme.ja.md)
